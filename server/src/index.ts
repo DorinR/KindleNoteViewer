@@ -17,9 +17,10 @@ const main = async () => {
     const orm = await MikroORM.init(microConfig)
     await orm.getMigrator().up()
 
-    // start server
+    // create server instance
     const app = express()
 
+    // create Redis instance
     const RedisStore = connectRedis(session)
     const redisClient = redis.createClient()
 
