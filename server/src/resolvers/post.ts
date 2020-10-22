@@ -1,4 +1,4 @@
-import { MyContext } from 'src/types'
+import { MyContext } from 'src/types/types'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Post } from '../entities/Post'
 
