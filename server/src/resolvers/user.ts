@@ -41,7 +41,6 @@ export class UserResolver {
         @Arg('email') email: string,
         @Ctx() {em, redis}: MyContext
     ): Promise<Boolean> {
-        console.log('resetPassword endpoint')
         const user = await em.findOne(User, {email})
         if (!user) {
             return true
@@ -91,7 +90,16 @@ export class UserResolver {
                 .returning('*')
             user = result[0]
         } catch (err) {
-            if (err.detail.includes('already exists')) {
+            if (err.detail.includes('email') && err.detail.includes('already exists')) {
+                return {
+                    errors: [
+                        {
+                            field: 'email',
+                            message: 'email already exists',
+                        },
+                    ],
+                }
+            } else if (err.detail.includes('username') && err.detail.includes('already exists')) {
                 return {
                     errors: [
                         {
