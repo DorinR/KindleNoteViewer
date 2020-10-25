@@ -33,7 +33,6 @@ export class UserResolver {
         const status = await em.nativeUpdate(User, {id: user}, {password})
         console.log(status)
         return status.toString()
-       
     }
     
     @Mutation(() => Boolean)
@@ -138,12 +137,13 @@ export class UserResolver {
             }
         }
         const valid = await argon2.verify(user.password, options.password)
+
         if (!valid) {
             return {
                 errors: [
                     {
                         field: 'password',
-                        message: 'incorrect password',
+                        message: 'incorrect email or password',
                     },
                 ],
             }

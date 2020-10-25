@@ -3,8 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/change-password/[token]": "pages/change-password/[token].js",
-  "/register": "pages/register.js",
-  "/": "pages/index.js",
-  "/reset-password": "pages/reset-password.js",
-  "/login": "pages/login.js"
+  "/login": "pages/login.js",
+  "/": "pages/index.js"
 }
