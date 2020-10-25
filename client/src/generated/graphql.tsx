@@ -52,6 +52,8 @@ export type Mutation = {
   createPost: Post;
   updatePost: Post;
   deletePost: Scalars['Boolean'];
+  changePassword: Scalars['Boolean'];
+  resetPassword: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -71,6 +73,17 @@ export type MutationUpdatePostArgs = {
 
 export type MutationDeletePostArgs = {
   id: Scalars['Float'];
+};
+
+
+export type MutationChangePasswordArgs = {
+  password: Scalars['String'];
+  token: Scalars['String'];
+};
+
+
+export type MutationResetPasswordArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -159,6 +172,16 @@ export type RegisterMutation = (
   ) }
 );
 
+export type ResetPasswordMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ResetPasswordMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'resetPassword'>
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -218,6 +241,15 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const ResetPasswordDocument = gql`
+    mutation ResetPassword($email: String!) {
+  resetPassword(email: $email)
+}
+    `;
+
+export function useResetPasswordMutation() {
+  return Urql.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument);
 };
 export const MeDocument = gql`
     query Me {

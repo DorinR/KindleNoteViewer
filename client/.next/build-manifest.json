@@ -29,10 +29,30 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
+    "/change-password/[token]": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/change-password/[token].js"
+    ],
     "/login": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
       "static/chunks/pages/login.js"
+    ],
+    "/next/dist/pages/_error": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/next/dist/pages/_error.js"
+    ],
+    "/register": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/register.js"
+    ],
+    "/reset-password": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/reset-password.js"
     ]
   },
   "ampFirstPages": []

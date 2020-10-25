@@ -6,10 +6,11 @@ import { InputField } from '../components/InputField'
 import { useLoginMutation } from '../generated/graphql'
 import { toErrorMap } from '../utils/toErrorMap'
 import { useRouter } from 'next/router'
+import NextLink from 'next/link'
 
-interface loginProps {}
+interface loginProps { }
 
-export const Login: React.FC<loginProps> = ({}) => {
+export const Login: React.FC<loginProps> = ({ }) => {
     const router = useRouter()
     const [, login] = useLoginMutation()
 
@@ -33,7 +34,12 @@ export const Login: React.FC<loginProps> = ({}) => {
                         </Box>
                         <Button mt={4} isLoading={isSubmitting} variantColor='teal' type='submit'>
                             login
-                        </Button>
+                            </Button>
+                        <NextLink href='/reset-password'>
+                            <Button ml={4} mt={4} variantColor='teal' variant='link'>
+                                forgot password
+                            </Button>
+                        </NextLink>
                     </Form>
                 )}
             </Formik>
