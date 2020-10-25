@@ -52,7 +52,7 @@ export type Mutation = {
   createPost: Post;
   updatePost: Post;
   deletePost: Scalars['Boolean'];
-  changePassword: Scalars['Boolean'];
+  changePassword: ChangePasswordResponse;
   resetPassword: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
@@ -96,16 +96,21 @@ export type MutationLoginArgs = {
   options: LoginInput;
 };
 
-export type UserResponse = {
-  __typename?: 'UserResponse';
+export type ChangePasswordResponse = {
+  __typename?: 'ChangePasswordResponse';
   errors?: Maybe<Array<FieldError>>;
-  user?: Maybe<User>;
 };
 
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
   message: Scalars['String'];
+};
+
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
 };
 
 export type RegisterInput = {
@@ -122,6 +127,23 @@ export type LoginInput = {
 export type RegularUserFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'username'>
+);
+
+export type ChangePasswordMutationVariables = Exact<{
+  token: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type ChangePasswordMutation = (
+  { __typename?: 'Mutation' }
+  & { changePassword: (
+    { __typename?: 'ChangePasswordResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
 );
 
 export type LoginMutationVariables = Exact<{
@@ -199,6 +221,20 @@ export const RegularUserFragmentDoc = gql`
   username
 }
     `;
+export const ChangePasswordDocument = gql`
+    mutation ChangePassword($token: String!, $password: String!) {
+  changePassword(token: $token, password: $password) {
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+
+export function useChangePasswordMutation() {
+  return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
+};
 export const LoginDocument = gql`
     mutation Login($options: LoginInput!) {
   login(options: $options) {
