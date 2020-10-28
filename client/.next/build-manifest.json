@@ -29,11 +29,6 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/change-password/[token]": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/change-password/[token].js"
-    ],
     "/login": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",

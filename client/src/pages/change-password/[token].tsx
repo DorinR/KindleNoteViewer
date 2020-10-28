@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { useChangePasswordMutation } from '../../generated/graphql'
-import { Box, Button } from '@chakra-ui/core'
+import { Button } from '@chakra-ui/core'
 import { Formik, Form } from 'formik'
 import { InputField } from '../../components/InputField'
 import { Wrapper } from '../../components/Wrapper'
@@ -12,28 +12,27 @@ interface ChangePasswordProps {}
 export const changePassword: React.FC<ChangePasswordProps> = () => {
     const router = useRouter()
     const [, changePassword] = useChangePasswordMutation()
-    
     const { token } = router.query
     const validToken = typeof token === 'string' ? token : 'fallback-token'
-    console.log(validToken)
-    
+
     return (
         <Wrapper variant='regular'>
             <Formik
                 initialValues={{ password: '' }}
                 onSubmit={async (values, { setErrors }) => {
                     const response = await changePassword({ token: validToken, password: values.password })
-                    console.log(response)
                     if (response.data?.changePassword.errors?.length) {
                         setErrors(toErrorMap(response.data.changePassword.errors))
                     } else {
                         alert('Password changed successfully!')
-                        setTimeout(() => {router.push('/')}, 1000)
+                        setTimeout(() => {
+                            router.push('/')
+                        }, 1000)
                     }
                 }}>
                 {({ isSubmitting }) => (
                     <Form>
-                        <InputField name='password' label='New Password' placeholder='new password' type='password'/>
+                        <InputField name='password' label='New Password' placeholder='new password' type='password' />
                         <Button mt={4} isLoading={isSubmitting} variantColor='teal' type='submit'>
                             Change Password
                         </Button>

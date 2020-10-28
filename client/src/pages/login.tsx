@@ -8,9 +8,7 @@ import { toErrorMap } from '../utils/toErrorMap'
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
 
-interface loginProps { }
-
-export const Login: React.FC<loginProps> = ({ }) => {
+export const Login: React.FC = ({}) => {
     const router = useRouter()
     const [, login] = useLoginMutation()
 
@@ -34,7 +32,7 @@ export const Login: React.FC<loginProps> = ({ }) => {
                         </Box>
                         <Button mt={4} isLoading={isSubmitting} variantColor='teal' type='submit'>
                             login
-                            </Button>
+                        </Button>
                         <NextLink href='/reset-password'>
                             <Button ml={4} mt={4} variantColor='teal' variant='link'>
                                 forgot password

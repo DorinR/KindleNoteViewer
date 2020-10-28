@@ -3,6 +3,5 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/login": "pages/login.js",
-  "/change-password/[token]": "pages/change-password/[token].js",
   "/": "pages/index.js"
 }
