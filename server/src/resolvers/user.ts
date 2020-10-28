@@ -4,35 +4,66 @@ import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import argon2 from 'argon2'
 import { EntityManager } from '@mikro-orm/postgresql'
 import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from '../constants'
-import { LoginInput, RegisterInput, UserResponse } from '../types/userResolverTypes'
+import { ChangePasswordResponse, LoginInput, RegisterInput, UserResponse } from '../types/userResolverTypes'
 import { validateRegistrationData } from '../utils/registerValidation'
 import { sendEmail } from '../utils/sendEmail'
 import { v4 } from 'uuid'
 
 @Resolver()
 export class UserResolver {
-    @Mutation(() => Boolean)
+    @Mutation(() => ChangePasswordResponse)
     async changePassword(
         @Arg('token') token: string,
         @Arg('password') password: string,
-        @Ctx() {em, redis}: MyContext
-    ): Promise<string> {
-        const key = FORGET_PASSWORD_PREFIX + token
-        let userId = await redis.get(key)
-        console.log(`userId: ${userId}`)
-        let user: number
-        console.log(`token: ${token}`)
-        console.log(`password: ${password}`)
-
-        if (!userId) {
-            return 'user not found'
-        } else {
-            user = parseInt(userId)
+        @Ctx() {em, req, redis}: MyContext
+    ): Promise<UserResponse> {
+        if (password.length < 2) {
+            return {
+                errors: [
+                    {
+                        field: 'password',
+                        message: 'password is too short'
+                    }
+                ]
+            }
         }
+        
+        const key = FORGET_PASSWORD_PREFIX + token
+        const userId = await redis.get(key)
+        if (!userId) {
+            return {
+                errors: [
+                    { 
+                        field: 'password',
+                        message: 'link expired'
+                    }
+                ]
+            }
+        }
+        const userIdNum = parseInt(userId)
+        const user = await em.findOne(User, {id: userIdNum})
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        field: 'password',
+                        message: 'this user no longer exists'
+                    }
+                ]
+            }
+        }
+        
+        user.password = await argon2.hash(password)
+        await em.persistAndFlush(user)
 
-        const status = await em.nativeUpdate(User, {id: user}, {password})
-        console.log(status)
-        return status.toString()
+        await redis.del(key)
+
+        // log in user after password change
+        req.session.userId = user.id
+        
+        return {
+            user
+        }
     }
     
     @Mutation(() => Boolean)

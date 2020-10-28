@@ -39,3 +39,9 @@ export class UserResponse {
     @Field(() => User, { nullable: true })
     user?: User
 }
+
+@ObjectType()
+export class ChangePasswordResponse {
+    @Field(() => [FieldError], { nullable: true })
+    errors?: FieldError[]
+}
