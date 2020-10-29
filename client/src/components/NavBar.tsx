@@ -6,13 +6,14 @@ import { useLogoutMutation, useMeQuery } from '../generated/graphql'
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
-    const [{ data, fetching }] = useMeQuery()
+    const [{ data, fetching }, runMeQuery] = useMeQuery()
     const [, logout] = useLogoutMutation()
+
     let accountLinks = null
 
     const handleLogout = () => {
         logout()
-        location.reload()
+        runMeQuery()
     }
 
     if (fetching) {
@@ -46,9 +47,9 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     return (
         <Flex maxWidth='800px' p={4} align='center' m={'auto'}>
             <NextLink href='/'>
-                <Box mr={'auto'}>
-                    <strong>Generic</strong>
-                </Box>
+                <Button mr={'auto'} variant='ghost' variantColor='teal'>
+                    generic project
+                </Button>
             </NextLink>
             <Box ml={'auto'}>{accountLinks}</Box>
         </Flex>

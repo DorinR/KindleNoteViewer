@@ -7,6 +7,7 @@ const client = createClient({
     fetchOptions: {
         credentials: 'include',
     },
+    requestPolicy: 'network-only',
 })
 
 function MyApp({ Component, pageProps }: any) {
