@@ -12,6 +12,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 
     const handleLogout = () => {
         logout()
+        location.reload()
     }
 
     if (fetching) {

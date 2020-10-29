@@ -15,8 +15,12 @@ export class PostResolver {
     }
 
     @Mutation(() => Post)
-    async createPost(@Arg('title') title: string, @Ctx() { em }: MyContext): Promise<Post> {
-        const post = em.create(Post, { title })
+    async createPost(
+        @Arg('title') title: string,
+        @Arg('content') content: string,
+        @Ctx() { em }: MyContext
+    ): Promise<Post> {
+        const post = em.create(Post, { title, content })
         await em.persistAndFlush(post)
         return post
     }
@@ -25,6 +29,7 @@ export class PostResolver {
     async updatePost(
         @Arg('id') id: number,
         @Arg('title', () => String, { nullable: true }) title: string,
+        @Arg('content', () => String, { nullable: true }) content: string,
         @Ctx() { em }: MyContext
     ): Promise<Post | null> {
         const post = await em.findOne(Post, { id })
@@ -33,6 +38,7 @@ export class PostResolver {
         }
         if (typeof title !== 'undefined') {
             post.title = title
+            post.content = content
             await em.persistAndFlush
         }
         return post
