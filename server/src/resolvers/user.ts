@@ -15,44 +15,44 @@ export class UserResolver {
     async changePassword(
         @Arg('token') token: string,
         @Arg('password') password: string,
-        @Ctx() {em, req, redis}: MyContext
+        @Ctx() { em, req, redis }: MyContext
     ): Promise<UserResponse> {
         if (password.length < 2) {
             return {
                 errors: [
                     {
                         field: 'password',
-                        message: 'password is too short'
-                    }
-                ]
+                        message: 'password is too short',
+                    },
+                ],
             }
         }
-        
+
         const key = FORGET_PASSWORD_PREFIX + token
         const userId = await redis.get(key)
         if (!userId) {
             return {
                 errors: [
-                    { 
+                    {
                         field: 'password',
-                        message: 'link expired'
-                    }
-                ]
+                        message: 'link expired',
+                    },
+                ],
             }
         }
         const userIdNum = parseInt(userId)
-        const user = await em.findOne(User, {id: userIdNum})
+        const user = await em.findOne(User, { id: userIdNum })
         if (!user) {
             return {
                 errors: [
                     {
                         field: 'password',
-                        message: 'this user no longer exists'
-                    }
-                ]
+                        message: 'this user no longer exists',
+                    },
+                ],
             }
         }
-        
+
         user.password = await argon2.hash(password)
         await em.persistAndFlush(user)
 
@@ -60,33 +60,30 @@ export class UserResolver {
 
         // log in user after password change
         req.session.userId = user.id
-        
+
         return {
-            user
+            user,
         }
     }
-    
+
     @Mutation(() => Boolean)
-    async resetPassword(
-        @Arg('email') email: string,
-        @Ctx() {em, redis}: MyContext
-    ): Promise<Boolean> {
-        const user = await em.findOne(User, {email})
+    async resetPassword(@Arg('email') email: string, @Ctx() { em, redis }: MyContext): Promise<Boolean> {
+        const user = await em.findOne(User, { email })
         if (!user) {
             return true
         }
         const token = v4()
 
         await redis.set(FORGET_PASSWORD_PREFIX + token, user.id, 'ex', 1000 * 60 * 60 * 24 * 3) // 3 days
-        
+
         await sendEmail(
-            email, 
+            email,
             `<a href='http://localhost:3000/change-password/${token}'>Click Here to Reset Password.</a>`
         )
         return true
     }
-    
-    @Query(() => User)
+
+    @Query(() => User, { nullable: true })
     async me(@Ctx() { req, em }: MyContext): Promise<User | null> {
         if (!req.session.userId) {
             return null
@@ -96,13 +93,10 @@ export class UserResolver {
     }
 
     @Mutation(() => UserResponse)
-    async register(
-        @Arg('options') options: RegisterInput,
-        @Ctx() { req, em }: MyContext
-    ): Promise<UserResponse> {
+    async register(@Arg('options') options: RegisterInput, @Ctx() { req, em }: MyContext): Promise<UserResponse> {
         const errors = validateRegistrationData(options)
         if (errors) {
-            return {errors}
+            return { errors }
         }
         const hashedPassword = await argon2.hash(options.password)
         let user
@@ -152,11 +146,11 @@ export class UserResolver {
     async login(@Arg('options') options: LoginInput, @Ctx() { em, req }: MyContext): Promise<UserResponse> {
         let user
         if (options.usernameOrEmail.includes('@')) {
-            user = await em.findOne(User, {email: options.usernameOrEmail})
+            user = await em.findOne(User, { email: options.usernameOrEmail })
         } else {
-            user = await em.findOne(User, {username: options.usernameOrEmail})
+            user = await em.findOne(User, { username: options.usernameOrEmail })
         }
-    
+
         if (!user) {
             return {
                 errors: [

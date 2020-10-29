@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Link } from '@chakra-ui/core'
+import { Box, Button, Flex } from '@chakra-ui/core'
 import React from 'react'
 import NextLink from 'next/link'
 import { useLogoutMutation, useMeQuery } from '../generated/graphql'
@@ -7,28 +7,35 @@ interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
     const [{ data, fetching }] = useMeQuery()
-    const [{ fetching: logoutFetching }, logout] = useLogoutMutation()
-    let body = null
+    const [, logout] = useLogoutMutation()
+    let accountLinks = null
 
-    // data is loading
+    const handleLogout = () => {
+        logout()
+    }
+
     if (fetching) {
-        // user not logged in
+        // don't display anything
     } else if (!data?.me) {
-        body = (
+        accountLinks = (
             <>
                 <NextLink href='/login'>
-                    <Link mr={4}>login</Link>
+                    <Button variantColor='teal' variant='ghost'>
+                        login
+                    </Button>
                 </NextLink>
                 <NextLink href='/register'>
-                    <Link>register</Link>
+                    <Button variantColor='teal' variant='ghost'>
+                        register
+                    </Button>
                 </NextLink>
             </>
         )
     } else {
-        body = (
-            <Flex>
+        accountLinks = (
+            <Flex align='center'>
                 <Box mr={2}>{data.me.username}</Box>
-                <Button isLoading={logoutFetching} onClick={() => logout()} variant='link'>
+                <Button onClick={() => handleLogout()} variantColor='red' variant='ghost'>
                     Logout
                 </Button>
             </Flex>
@@ -36,8 +43,13 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     }
 
     return (
-        <Flex bg='tomato' p={4}>
-            <Box ml={'auto'}>{body}</Box>
+        <Flex maxWidth='800px' p={4} align='center' m={'auto'}>
+            <NextLink href='/'>
+                <Box mr={'auto'}>
+                    <strong>Generic</strong>
+                </Box>
+            </NextLink>
+            <Box ml={'auto'}>{accountLinks}</Box>
         </Flex>
     )
 }
