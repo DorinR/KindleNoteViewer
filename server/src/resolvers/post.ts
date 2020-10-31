@@ -1,3 +1,4 @@
+import { User } from '../entities/User'
 import { MyContext } from 'src/types/types'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Post } from '../entities/Post'
@@ -18,9 +19,11 @@ export class PostResolver {
     async createPost(
         @Arg('title') title: string,
         @Arg('content') content: string,
-        @Ctx() { em }: MyContext
+        @Ctx() { em, req }: MyContext
     ): Promise<Post> {
-        const post = em.create(Post, { title, content })
+        const userId = req.session.userId
+        const user = await em.findOne(User, { id: userId })
+        const post = em.create(Post, { title, content, createdBy: user?.username })
         await em.persistAndFlush(post)
         return post
     }

@@ -23,4 +23,8 @@ export class Post {
     @Field()
     @Property({ type: 'text', nullable: true })
     content!: string
+
+    @Field()
+    @Property({ type: 'text' })
+    createdBy!: string
 }

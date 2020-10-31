@@ -9,9 +9,7 @@ import { useRouter } from 'next/router'
 import { NavBar } from '../components/NavBar'
 import { FormShaper } from '../components/FormShaper'
 
-interface registerProps {}
-
-export const Register: React.FC<registerProps> = ({}) => {
+export const Register: React.FC = ({}) => {
     const router = useRouter()
     const [, register] = useRegisterMutation()
 
