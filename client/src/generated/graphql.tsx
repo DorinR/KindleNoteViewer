@@ -139,6 +139,11 @@ export type FieldErrorFragment = (
   & Pick<FieldError, 'field' | 'message'>
 );
 
+export type RegularPostFragment = (
+  { __typename?: 'Post' }
+  & Pick<Post, 'title' | 'content' | 'createdBy'>
+);
+
 export type RegularUserFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'username'>
@@ -176,7 +181,7 @@ export type CreatePostMutation = (
       & FieldErrorFragment
     )>>, post?: Maybe<(
       { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title' | 'content' | 'createdBy'>
+      & Pick<Post, 'title' | 'content' | 'createdBy'>
     )> }
   ) }
 );
@@ -257,7 +262,7 @@ export type PostsQuery = (
   { __typename?: 'Query' }
   & { posts: Array<(
     { __typename?: 'Post' }
-    & Pick<Post, 'title' | 'content' | 'createdBy'>
+    & RegularPostFragment
   )> }
 );
 
@@ -265,6 +270,13 @@ export const FieldErrorFragmentDoc = gql`
     fragment FieldError on FieldError {
   field
   message
+}
+    `;
+export const RegularPostFragmentDoc = gql`
+    fragment RegularPost on Post {
+  title
+  content
+  createdBy
 }
     `;
 export const RegularUserFragmentDoc = gql`
@@ -294,7 +306,6 @@ export const CreatePostDocument = gql`
       ...FieldError
     }
     post {
-      id
       title
       content
       createdBy
@@ -372,12 +383,10 @@ export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'q
 export const PostsDocument = gql`
     query Posts {
   posts {
-    title
-    content
-    createdBy
+    ...RegularPost
   }
 }
-    `;
+    ${RegularPostFragmentDoc}`;
 
 export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<PostsQuery>({ query: PostsDocument, ...options });

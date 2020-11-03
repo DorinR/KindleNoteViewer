@@ -46,11 +46,23 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 
     return (
         <Flex maxWidth='800px' p={4} align='center' m={'auto'}>
-            <NextLink href='/'>
-                <Button mr={'auto'} variant='ghost' variantColor='teal'>
-                    generic project
-                </Button>
-            </NextLink>
+            <Box mr={'auto'}>
+                <NextLink href='/'>
+                    <Button variant='ghost' variantColor='teal'>
+                        generic project
+                    </Button>
+                </NextLink>
+                <NextLink href='/posts/create-post'>
+                    <Button size='sm' mr={4} variantColor='teal'>
+                        create post
+                    </Button>
+                </NextLink>
+                <NextLink href='/posts/posts'>
+                    <Button size='sm' variantColor='green'>
+                        view posts
+                    </Button>
+                </NextLink>
+            </Box>
             <Box ml={'auto'}>{accountLinks}</Box>
         </Flex>
     )

@@ -24,6 +24,7 @@ const CreatePost: React.FC<createPostProps> = ({}) => {
                     <Formik
                         initialValues={{ title: '', content: '' }}
                         onSubmit={async (values, { setErrors }) => {
+                            console.log(values)
                             const response = await createPost(values)
                             if (response.data?.createPost.errors) {
                                 setErrors(toErrorMap(response.data.createPost.errors))
