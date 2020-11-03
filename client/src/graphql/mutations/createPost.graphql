@@ -1,0 +1,13 @@
+mutation CreatePost($title: String!, $content: String!) {
+    createPost(title: $title, content: $content) {
+        errors {
+            ...FieldError
+        }
+        post {
+            id
+            title
+            content
+            createdBy
+        }
+    }
+}
