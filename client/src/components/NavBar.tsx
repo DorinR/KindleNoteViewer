@@ -52,11 +52,13 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                         generic project
                     </Button>
                 </NextLink>
-                <NextLink href='/posts/create-post'>
-                    <Button size='sm' mr={4} variantColor='teal'>
-                        create post
-                    </Button>
-                </NextLink>
+                {data?.me ? (
+                    <NextLink href='/posts/create-post'>
+                        <Button size='sm' mr={4} variantColor='teal'>
+                            create post
+                        </Button>
+                    </NextLink>
+                ) : null}
                 <NextLink href='/posts/posts'>
                     <Button size='sm' variantColor='green'>
                         view posts

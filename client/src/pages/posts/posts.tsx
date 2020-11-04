@@ -13,9 +13,8 @@ const Posts: React.FC = ({}) => {
     if (!data) {
         posts = <CircularProgress isIndeterminate color='teal'></CircularProgress>
     } else {
-        let key = 0
         posts = Object.values(data.posts).map((el) => (
-            <Post key={key++} title={el.title} content={el.content} username={el.createdBy}></Post>
+            <Post key={el.id} title={el.title} content={el.content} username={el.createdBy}></Post>
         ))
     }
 

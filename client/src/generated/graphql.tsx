@@ -141,7 +141,7 @@ export type FieldErrorFragment = (
 
 export type RegularPostFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'title' | 'content' | 'createdBy'>
+  & Pick<Post, 'id' | 'title' | 'content' | 'createdBy'>
 );
 
 export type RegularUserFragment = (
@@ -274,6 +274,7 @@ export const FieldErrorFragmentDoc = gql`
     `;
 export const RegularPostFragmentDoc = gql`
     fragment RegularPost on Post {
+  id
   title
   content
   createdBy

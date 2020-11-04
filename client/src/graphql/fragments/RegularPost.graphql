@@ -1,4 +1,5 @@
 fragment RegularPost on Post {
+    id
     title
     content
     createdBy
