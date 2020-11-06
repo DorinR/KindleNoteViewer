@@ -4,10 +4,10 @@ import React from 'react'
 interface PostProps {
     title: String
     content: String
-    username: String
+    creatorId: String
 }
 
-export const Post: React.FC<PostProps> = ({ title, content, username }) => {
+export const Post: React.FC<PostProps> = ({ title, content, creatorId }) => {
     return (
         <Box backgroundColor='#CBD5E0' p={4} mt={4} rounded='lg' borderWidth='2px' borderColor='#A0AEC0' boxShadow='xl'>
             <Box>
@@ -18,7 +18,7 @@ export const Post: React.FC<PostProps> = ({ title, content, username }) => {
             </Box>
             <Box alignContent='right'>
                 <Text as='strong' color='#38B2AC'>
-                    {username}
+                    {creatorId}
                 </Text>
             </Box>
         </Box>

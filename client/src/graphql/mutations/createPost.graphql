@@ -4,9 +4,7 @@ mutation CreatePost($title: String!, $content: String!) {
             ...FieldError
         }
         post {
-            title
-            content
-            createdBy
+            ...RegularPost
         }
     }
 }

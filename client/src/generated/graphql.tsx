@@ -33,20 +33,20 @@ export type QueryGetUserArgs = {
 export type Post = {
   __typename?: 'Post';
   id: Scalars['Float'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
   title: Scalars['String'];
   content: Scalars['String'];
-  createdBy: Scalars['String'];
+  creatorId: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type User = {
   __typename?: 'User';
   id: Scalars['Float'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
   username: Scalars['String'];
   email: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type Mutation = {
@@ -141,7 +141,7 @@ export type FieldErrorFragment = (
 
 export type RegularPostFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'title' | 'content' | 'createdBy'>
+  & Pick<Post, 'id' | 'title' | 'content' | 'creatorId'>
 );
 
 export type RegularUserFragment = (
@@ -181,7 +181,7 @@ export type CreatePostMutation = (
       & FieldErrorFragment
     )>>, post?: Maybe<(
       { __typename?: 'Post' }
-      & Pick<Post, 'title' | 'content' | 'createdBy'>
+      & RegularPostFragment
     )> }
   ) }
 );
@@ -277,7 +277,7 @@ export const RegularPostFragmentDoc = gql`
   id
   title
   content
-  createdBy
+  creatorId
 }
     `;
 export const RegularUserFragmentDoc = gql`
@@ -307,13 +307,12 @@ export const CreatePostDocument = gql`
       ...FieldError
     }
     post {
-      title
-      content
-      createdBy
+      ...RegularPost
     }
   }
 }
-    ${FieldErrorFragmentDoc}`;
+    ${FieldErrorFragmentDoc}
+${RegularPostFragmentDoc}`;
 
 export function useCreatePostMutation() {
   return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
