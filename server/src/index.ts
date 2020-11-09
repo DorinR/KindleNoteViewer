@@ -13,28 +13,36 @@ import cors from 'cors'
 import { createConnection } from 'typeorm'
 import { Post } from './entities/Post'
 import { User } from './entities/User'
+import path from 'path'
 
 const main = async () => {
-    await createConnection({
+    const conn = await createConnection({
         type: 'postgres',
-        database: 'lireddit2',
-        username: 'postgres',
-        password: 'postgres',
+        url: process.env.DATABASE_URL,
         logging: true,
-        synchronize: true,
+        // synchronize: true,
+        migrations: [path.join(__dirname, './migrations/*')],
         entities: [Post, User], // TODO
     })
+    // create tables in new
+    await conn.runMigrations()
 
     // create server instance
     const app = express()
 
     // create Redis instance
     const RedisStore = connectRedis(session)
-    const redis = new Redis()
+    const redis = new Redis(process.env.REDIS_URL)
+
+    // express needs to know that 1 nginx sits in front of the server
+    // otherwise sessions and cookies will break
+    app.set('trust proxy', 1)
+
+    console.log('cors origin: ', process.env.CORS_ORIGIN)
 
     app.use(
         cors({
-            origin: 'http://localhost:3000',
+            origin: process.env.CORS_ORIGIN,
             credentials: true,
         })
     )
@@ -47,10 +55,11 @@ const main = async () => {
                 maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
                 httpOnly: true,
                 secure: __prod__, // cookie only works with https
+                domain: __prod__ ? '.codewander.club' : undefined,
                 sameSite: 'lax',
             },
             saveUninitialized: false,
-            secret: 'keyboard cat', // TODO: switch this to environment variable
+            secret: process.env.SECRET, // TODO: switch this to environment variable
             resave: false,
         })
     )
@@ -65,8 +74,8 @@ const main = async () => {
 
     apolloServer.applyMiddleware({ app, cors: false })
 
-    app.listen(4000, () => {
-        console.log('server started on localhost:4000')
+    app.listen(parseInt(process.env.PORT), () => {
+        console.log(`server started on localhost:${process.env.PORT}`)
     })
 }
 

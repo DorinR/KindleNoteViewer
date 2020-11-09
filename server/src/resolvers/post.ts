@@ -1,8 +1,8 @@
-import { User } from '../entities/User'
 import { MyContext } from 'src/types/types'
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Post } from '../entities/Post'
 import { CreatePostResponse } from '../types/resolverTypes'
+import { isAuth } from '../middleware/isAuth'
 
 @Resolver()
 export class PostResolver {
@@ -17,6 +17,7 @@ export class PostResolver {
     }
 
     @Mutation(() => CreatePostResponse)
+    @UseMiddleware(isAuth)
     async createPost(
         @Arg('title') title: string,
         @Arg('content') content: string,
@@ -43,11 +44,12 @@ export class PostResolver {
             }
         }
 
-        if (!req.session.userId) {
-            throw new Error('User not authenticated')
-        }
-        const user = await User.findOne(req.session.userId)
-        const post = await Post.create({ title, content, creatorId: req.session.userId, creator: user }).save()
+        const post = await Post.create({
+            title,
+            content,
+            creatorId: req.session.userId,
+        }).save()
+
         return { post }
     }
 

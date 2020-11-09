@@ -37,3 +37,6 @@ yarn-error.log*
 
 # nextjs build files
 .next/
+
+# environment variables
+.env

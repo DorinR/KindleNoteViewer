@@ -24,11 +24,6 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/posts/create-post": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/posts/create-post.js"
-    ],
     "/posts/posts": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
