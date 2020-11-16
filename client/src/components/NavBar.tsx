@@ -49,15 +49,19 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                     <Button mr={4}>kindle notes</Button>
                 </NextLink>
                 {data?.me ? (
-                    <NextLink href='/posts/create-post'>
+                    <NextLink href='/books/add-book'>
                         <Button size='sm' mr={4}>
-                            create post
+                            add book
                         </Button>
                     </NextLink>
                 ) : null}
-                <NextLink href='/posts/posts'>
-                    <Button variant='ghost'>view posts</Button>
-                </NextLink>
+                {data?.me ? (
+                    <NextLink href='/books/add-book'>
+                        <Button size='sm' mr={4}>
+                            view highlights
+                        </Button>
+                    </NextLink>
+                ) : null}
             </Box>
             <IconButton
                 onClick={toggleColorMode}
