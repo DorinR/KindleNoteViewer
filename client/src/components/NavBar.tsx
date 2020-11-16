@@ -1,13 +1,15 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Text, useColorMode, IconButton } from '@chakra-ui/react'
 import React from 'react'
 import NextLink from 'next/link'
 import { useLogoutMutation, useMeQuery } from '../generated/graphql'
+import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
     const [{ data, fetching }, runMeQuery] = useMeQuery()
     const [, logout] = useLogoutMutation()
+    const { colorMode, toggleColorMode } = useColorMode()
 
     let accountLinks = null
 
@@ -63,6 +65,10 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                     </Button>
                 </NextLink>
             </Box>
+            <IconButton
+                onClick={toggleColorMode}
+                aria-label='Dark Mode'
+                icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}></IconButton>
             <Box ml={'auto'}>{accountLinks}</Box>
         </Flex>
     )
