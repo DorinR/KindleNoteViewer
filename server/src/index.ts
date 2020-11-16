@@ -20,12 +20,16 @@ const main = async () => {
         type: 'postgres',
         url: process.env.DATABASE_URL,
         logging: true,
-        // synchronize: true,
+        synchronize: !__prod__,
         migrations: [path.join(__dirname, './migrations/*')],
         entities: [Post, User], // TODO
     })
     // create tables in new
-    await conn.runMigrations()
+    if (__prod__) {
+        console.log('Running migrations...')
+        await conn.runMigrations()
+    }
+    console.log('__prod__', __prod__)
 
     // create server instance
     const app = express()

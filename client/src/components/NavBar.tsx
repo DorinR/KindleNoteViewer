@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from '@chakra-ui/core'
+import { Box, Button, Flex, Text } from '@chakra-ui/core'
 import React from 'react'
 import NextLink from 'next/link'
 import { useLogoutMutation, useMeQuery } from '../generated/graphql'
@@ -48,9 +48,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         <Flex maxWidth='800px' p={4} align='center' m={'auto'}>
             <Box mr={'auto'}>
                 <NextLink href='/'>
-                    <Button variant='ghost' variantColor='teal'>
-                        generic project
-                    </Button>
+                    <Text color='teal'>principles</Text>
                 </NextLink>
                 {data?.me ? (
                     <NextLink href='/posts/create-post'>
