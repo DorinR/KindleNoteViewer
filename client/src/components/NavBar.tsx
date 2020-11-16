@@ -24,14 +24,10 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         accountLinks = (
             <>
                 <NextLink href='/login'>
-                    <Button variantColor='teal' variant='ghost'>
-                        login
-                    </Button>
+                    <Button variant='ghost'>login</Button>
                 </NextLink>
                 <NextLink href='/register'>
-                    <Button variantColor='teal' variant='ghost'>
-                        register
-                    </Button>
+                    <Button variant='ghost'>register</Button>
                 </NextLink>
             </>
         )
@@ -39,7 +35,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         accountLinks = (
             <Flex align='center'>
                 <Box mr={2}>{data.me.username}</Box>
-                <Button onClick={() => handleLogout()} variantColor='red' variant='ghost'>
+                <Button onClick={() => handleLogout()} variant='ghost'>
                     Logout
                 </Button>
             </Flex>
@@ -50,19 +46,17 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         <Flex maxWidth='800px' p={4} align='center' m={'auto'}>
             <Box mr={'auto'}>
                 <NextLink href='/'>
-                    <Text color='teal'>principles</Text>
+                    <Button mr={4}>kindle notes</Button>
                 </NextLink>
                 {data?.me ? (
                     <NextLink href='/posts/create-post'>
-                        <Button size='sm' mr={4} variantColor='teal'>
+                        <Button size='sm' mr={4}>
                             create post
                         </Button>
                     </NextLink>
                 ) : null}
                 <NextLink href='/posts/posts'>
-                    <Button size='sm' variantColor='green'>
-                        view posts
-                    </Button>
+                    <Button variant='ghost'>view posts</Button>
                 </NextLink>
             </Box>
             <IconButton
