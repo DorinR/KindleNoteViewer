@@ -1,4 +1,4 @@
-import { CircularProgress, Text } from '@chakra-ui/core'
+import { CircularProgress, Text } from '@chakra-ui/react'
 import React from 'react'
 import { FormShaper } from '../../components/FormShaper'
 import { NavBar } from '../../components/NavBar'

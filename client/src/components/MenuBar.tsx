@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Heading, Flex, Text, Button } from '@chakra-ui/core'
+import { Box, Heading, Flex, Text, Button } from '@chakra-ui/react'
 
 const MenuItems = ({ children }: { children: String }) => (
     <Text mt={{ base: 4, md: 0 }} mr={6} display='block'>

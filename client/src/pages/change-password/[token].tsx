@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { useChangePasswordMutation } from '../../generated/graphql'
-import { Button } from '@chakra-ui/core'
+import { Button } from '@chakra-ui/react'
 import { Formik, Form } from 'formik'
 import { InputField } from '../../components/InputField'
 import { Wrapper } from '../../components/Wrapper'
