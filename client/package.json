@@ -24,6 +24,7 @@
         "react-dropzone": "^11.2.4",
         "react-jss": "^10.5.0",
         "sweetalert": "^2.1.2",
+        "text-cleaner": "^1.2.1",
         "urql": "^1.10.1"
     },
     "license": "MIT",
