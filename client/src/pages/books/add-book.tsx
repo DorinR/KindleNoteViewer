@@ -3,7 +3,7 @@ import { FormShaper } from '../../components/FormShaper'
 import { NavBar } from '../../components/NavBar'
 import { Text } from '@chakra-ui/react'
 import FileUploader from '../../components/FileUploader'
-import extractBookHighlights from '../../utils/htmlDomParser'
+// import extractBookHighlights from '../../utils/htmlDomParser'
 
 const AddBook: React.FC = ({}) => {
     const [rawHtml, setRawHtml] = useState('')
@@ -11,8 +11,8 @@ const AddBook: React.FC = ({}) => {
     if (rawHtml) {
         console.log('HTML string uploaded:')
         console.log(rawHtml)
-        const bookHighlights = extractBookHighlights(rawHtml)
-        // saveToDb(bookHighlights)
+        // const bookHighlights = extractBookHighlights(rawHtml)
+        // saveToDb(bookHighlights)\
     }
 
     return (
