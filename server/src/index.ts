@@ -4,16 +4,17 @@ import { COOKIE_NAME, __prod__ } from './constants'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
-import { PostResolver } from './resolvers/post'
 import { UserResolver } from './resolvers/user'
 import Redis from 'ioredis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
 import cors from 'cors'
 import { createConnection } from 'typeorm'
-import { Post } from './entities/Post'
 import { User } from './entities/User'
 import path from 'path'
+import { SectionHighlight } from './entities/SectionHighlight'
+import { Book } from './entities/Book'
+import { BookSection } from './entities/BookSection'
 
 const main = async () => {
     const conn = await createConnection({
@@ -22,7 +23,7 @@ const main = async () => {
         logging: true,
         synchronize: !__prod__,
         migrations: [path.join(__dirname, './migrations/*')],
-        entities: [Post, User], // TODO
+        entities: [User, Book, BookSection, SectionHighlight], // TODO
     })
     // create tables in new
     if (__prod__) {
@@ -70,7 +71,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [PostResolver, UserResolver],
+            resolvers: [UserResolver],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res, redis }),

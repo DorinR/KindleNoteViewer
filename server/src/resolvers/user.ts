@@ -105,7 +105,6 @@ export class UserResolver {
                 .insert()
                 .into(User)
                 .values({
-                    username: options.username,
                     email: options.email,
                     password: hashedPassword,
                 })
@@ -122,15 +121,6 @@ export class UserResolver {
                         },
                     ],
                 }
-            } else if (err.detail.includes('username') && err.detail.includes('already exists')) {
-                return {
-                    errors: [
-                        {
-                            field: 'username',
-                            message: 'username already exists',
-                        },
-                    ],
-                }
             }
         }
 
@@ -143,12 +133,7 @@ export class UserResolver {
 
     @Mutation(() => UserResponse)
     async login(@Arg('options') options: LoginInput, @Ctx() { req }: MyContext): Promise<UserResponse> {
-        let user
-        if (options.usernameOrEmail.includes('@')) {
-            user = await User.findOne({ where: { email: options.usernameOrEmail } })
-        } else {
-            user = await User.findOne({ where: { username: options.usernameOrEmail } })
-        }
+        const user = await User.findOne({ where: { username: options.email } })
 
         if (!user) {
             return {
@@ -181,8 +166,8 @@ export class UserResolver {
     }
 
     @Query(() => User)
-    async getUser(@Arg('username') username: string): Promise<User | null> {
-        const user = await User.findOne({ where: { username: username } })
+    async getUser(@Arg('email') email: string): Promise<User | null> {
+        const user = await User.findOne({ where: { email: email } })
         if (!user) {
             return null
         }

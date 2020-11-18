@@ -1,6 +1,0 @@
-fragment RegularPost on Post {
-    id
-    title
-    content
-    creatorId
-}

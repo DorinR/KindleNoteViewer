@@ -4,34 +4,40 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm'
-import { Book } from './Book'
+import { BookSection } from './BookSection'
+import { User } from './User'
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export class Book extends BaseEntity {
     @Field()
     @PrimaryGeneratedColumn()
     id!: number
 
     @Field()
-    @Column({ unique: true })
-    email!: string
-
     @Column()
-    password!: string
+    title!: string
 
-    @OneToMany(() => Book, (book) => book.owner)
-    books!: Book[]
+    @Field()
+    @Column()
+    author!: string
+
+    @OneToMany(() => BookSection, (bookSection) => bookSection.book)
+    sections!: BookSection[]
+
+    @ManyToOne(() => User, (user) => user.books)
+    owner!: User
 
     @Field(() => String)
     @CreateDateColumn()
-    createdAt = new Date()
+    createdAt: Date
 
     @Field(() => String)
     @UpdateDateColumn()
-    updatedAt = new Date()
+    updatedAt: Date
 }

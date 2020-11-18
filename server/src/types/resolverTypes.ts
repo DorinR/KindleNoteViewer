@@ -1,12 +1,8 @@
 import { User } from '../entities/User'
 import { Field, InputType, ObjectType } from 'type-graphql'
-import { Post } from '../entities/Post'
 
 @InputType()
 export class RegisterInput {
-    @Field()
-    username: string
-
     @Field()
     email: string
 
@@ -17,7 +13,7 @@ export class RegisterInput {
 @InputType()
 export class LoginInput {
     @Field()
-    usernameOrEmail: string
+    email: string
 
     @Field()
     password: string
@@ -39,15 +35,6 @@ export class UserResponse {
 
     @Field(() => User, { nullable: true })
     user?: User
-}
-
-@ObjectType()
-export class CreatePostResponse {
-    @Field(() => [FieldError], { nullable: true })
-    errors?: FieldError[]
-
-    @Field(() => Post, { nullable: true })
-    post?: Post
 }
 
 @ObjectType()

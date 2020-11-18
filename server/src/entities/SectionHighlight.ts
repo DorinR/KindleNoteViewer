@@ -8,29 +8,21 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm'
-import { User } from './User'
+import { BookSection } from './BookSection'
 
 @ObjectType()
 @Entity()
-export class Post extends BaseEntity {
+export class SectionHighlight extends BaseEntity {
     @Field()
     @PrimaryGeneratedColumn()
     id!: number
 
     @Field()
     @Column()
-    title!: string
+    note!: string
 
-    @Field()
-    @Column({ nullable: true })
-    content!: string
-
-    @Field()
-    @Column()
-    creatorId: string
-
-    @ManyToOne(() => User, (user) => user.posts)
-    creator!: User
+    @ManyToOne(() => BookSection, (bookSection) => bookSection.sectionHighlights)
+    bookSection!: BookSection
 
     @Field(() => String)
     @CreateDateColumn()

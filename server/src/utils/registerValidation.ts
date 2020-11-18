@@ -10,24 +10,6 @@ export const validateRegistrationData = (options: RegisterInput): FieldError[] |
         ]
     }
 
-    if (options.username.includes('@')) {
-        return [
-            {
-                field: 'username',
-                message: 'username cannot include an @',
-            },
-        ]
-    }
-
-    if (options.username.length <= 2) {
-        return [
-            {
-                field: 'username',
-                message: 'username length must be greater than 2',
-            },
-        ]
-    }
-
     if (options.password.length <= 2) {
         return [
             {
