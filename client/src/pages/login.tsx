@@ -20,7 +20,7 @@ export const Login: React.FC = ({}) => {
             <FormShaper>
                 <Wrapper variant='regular'>
                     <Formik
-                        initialValues={{ usernameOrEmail: '', password: '' }}
+                        initialValues={{ email: '', password: '' }}
                         onSubmit={async (values, { setErrors }) => {
                             const response = await login({ options: values })
                             if (response.data?.login.errors) {
@@ -31,11 +31,7 @@ export const Login: React.FC = ({}) => {
                         }}>
                         {({ isSubmitting }) => (
                             <Form>
-                                <InputField
-                                    name='usernameOrEmail'
-                                    label='username or email'
-                                    placeholder='username or email'
-                                />
+                                <InputField name='email' label='email' placeholder='email' />
                                 <Box mt={4}>
                                     <InputField
                                         name='password'
@@ -44,11 +40,11 @@ export const Login: React.FC = ({}) => {
                                         type='password'
                                     />
                                 </Box>
-                                <Button mt={4} isLoading={isSubmitting} variantColor='teal' type='submit'>
+                                <Button mt={4} isLoading={isSubmitting} type='submit'>
                                     login
                                 </Button>
                                 <NextLink href='/reset-password'>
-                                    <Button ml={4} mt={4} variantColor='teal' variant='link'>
+                                    <Button ml={4} mt={4} variant='link'>
                                         forgot password
                                     </Button>
                                 </NextLink>

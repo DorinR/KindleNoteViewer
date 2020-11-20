@@ -38,6 +38,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  saveBook: Book;
 };
 
 
@@ -59,6 +60,11 @@ export type MutationRegisterArgs = {
 
 export type MutationLoginArgs = {
   options: LoginInput;
+};
+
+
+export type MutationSaveBookArgs = {
+  book: BookInput;
 };
 
 export type ChangePasswordResponse = {
@@ -86,6 +92,30 @@ export type RegisterInput = {
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type Book = {
+  __typename?: 'Book';
+  id: Scalars['Float'];
+  title: Scalars['String'];
+  author: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type BookInput = {
+  title: Scalars['String'];
+  author: Scalars['String'];
+  sections: Array<SectionInput>;
+};
+
+export type SectionInput = {
+  sectionHeading: Scalars['String'];
+  sectionNotes: Array<HighlightInput>;
+};
+
+export type HighlightInput = {
+  note: Scalars['String'];
 };
 
 export type FieldErrorFragment = (
@@ -170,6 +200,19 @@ export type ResetPasswordMutationVariables = Exact<{
 export type ResetPasswordMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'resetPassword'>
+);
+
+export type SaveBookMutationVariables = Exact<{
+  book: BookInput;
+}>;
+
+
+export type SaveBookMutation = (
+  { __typename?: 'Mutation' }
+  & { saveBook: (
+    { __typename?: 'Book' }
+    & Pick<Book, 'title' | 'author'>
+  ) }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -260,6 +303,18 @@ export const ResetPasswordDocument = gql`
 
 export function useResetPasswordMutation() {
   return Urql.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument);
+};
+export const SaveBookDocument = gql`
+    mutation SaveBook($book: BookInput!) {
+  saveBook(book: $book) {
+    title
+    author
+  }
+}
+    `;
+
+export function useSaveBookMutation() {
+  return Urql.useMutation<SaveBookMutation, SaveBookMutationVariables>(SaveBookDocument);
 };
 export const MeDocument = gql`
     query Me {

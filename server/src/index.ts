@@ -15,6 +15,7 @@ import path from 'path'
 import { SectionHighlight } from './entities/SectionHighlight'
 import { Book } from './entities/Book'
 import { BookSection } from './entities/BookSection'
+import { BookResolver } from './resolvers/book'
 
 const main = async () => {
     const conn = await createConnection({
@@ -71,7 +72,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [UserResolver],
+            resolvers: [UserResolver, BookResolver],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res, redis }),

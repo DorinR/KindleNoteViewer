@@ -19,6 +19,32 @@ export class LoginInput {
     password: string
 }
 
+@InputType()
+export class HighlightInput {
+    @Field()
+    note: string
+}
+@InputType()
+export class SectionInput {
+    @Field()
+    sectionHeading: string
+
+    @Field(() => [HighlightInput])
+    sectionNotes: HighlightInput[]
+}
+
+@InputType()
+export class BookInput {
+    @Field()
+    title: string
+
+    @Field()
+    author: string
+
+    @Field(() => [SectionInput])
+    sections: SectionInput[]
+}
+
 @ObjectType()
 export class FieldError {
     @Field()

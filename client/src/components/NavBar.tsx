@@ -34,7 +34,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     } else {
         accountLinks = (
             <Flex align='center'>
-                <Box mr={2}>{data.me.username}</Box>
+                <Box mr={2}>{data.me.email}</Box>
                 <Button onClick={() => handleLogout()} variant='ghost'>
                     Logout
                 </Button>

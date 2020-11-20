@@ -19,7 +19,7 @@ export const Register: React.FC = ({}) => {
             <FormShaper>
                 <Wrapper variant='regular'>
                     <Formik
-                        initialValues={{ email: '', username: '', password: '' }}
+                        initialValues={{ email: '', password: '' }}
                         onSubmit={async (values, { setErrors }) => {
                             const response = await register(values)
                             if (response.data?.register.errors) {
@@ -31,7 +31,6 @@ export const Register: React.FC = ({}) => {
                         {({ isSubmitting }) => (
                             <Form>
                                 <InputField name='email' label='email' placeholder='email' />
-                                <InputField name='username' label='username' placeholder='username' />
                                 <Box mt={4}>
                                     <InputField
                                         name='password'
@@ -40,7 +39,7 @@ export const Register: React.FC = ({}) => {
                                         type='password'
                                     />
                                 </Box>
-                                <Button mt={4} isLoading={isSubmitting} variantColor='teal' type='submit'>
+                                <Button mt={4} isLoading={isSubmitting} type='submit'>
                                     register
                                 </Button>
                             </Form>

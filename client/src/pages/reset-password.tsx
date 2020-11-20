@@ -26,7 +26,7 @@ export const ResetPassword: React.FC<ResetPasswordProps> = ({}) => {
                 {({ isSubmitting }) => (
                     <Form>
                         <InputField name='email' label='Email' placeholder='email' />
-                        <Button mt={4} isLoading={isSubmitting} variantColor='teal' type='submit'>
+                        <Button mt={4} isLoading={isSubmitting} type='submit'>
                             reset password
                         </Button>
                     </Form>

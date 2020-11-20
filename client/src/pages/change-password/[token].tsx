@@ -33,7 +33,7 @@ export const changePassword: React.FC<ChangePasswordProps> = () => {
                 {({ isSubmitting }) => (
                     <Form>
                         <InputField name='password' label='New Password' placeholder='new password' type='password' />
-                        <Button mt={4} isLoading={isSubmitting} variantColor='teal' type='submit'>
+                        <Button mt={4} isLoading={isSubmitting} type='submit'>
                             Change Password
                         </Button>
                     </Form>
