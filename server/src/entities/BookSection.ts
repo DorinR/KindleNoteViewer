@@ -21,10 +21,10 @@ export class BookSection extends BaseEntity {
 
     @Field()
     @Column()
-    sectionTitle!: string
+    sectionHeading!: string
 
     @OneToMany(() => SectionHighlight, (sectionHighlight) => sectionHighlight.bookSection)
-    sectionHighlights: SectionHighlight[]
+    sectionNotes: SectionHighlight[]
 
     @ManyToOne(() => Book, (book) => book.sections)
     book!: Book

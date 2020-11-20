@@ -21,7 +21,7 @@ export class SectionHighlight extends BaseEntity {
     @Column()
     note!: string
 
-    @ManyToOne(() => BookSection, (bookSection) => bookSection.sectionHighlights)
+    @ManyToOne(() => BookSection, (bookSection) => bookSection.sectionNotes)
     bookSection!: BookSection
 
     @Field(() => String)

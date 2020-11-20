@@ -38,7 +38,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
-  saveBook: Book;
+  saveBook: AddBookResponse;
 };
 
 
@@ -92,6 +92,12 @@ export type RegisterInput = {
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type AddBookResponse = {
+  __typename?: 'AddBookResponse';
+  error?: Maybe<Scalars['String']>;
+  book?: Maybe<Book>;
 };
 
 export type Book = {
@@ -210,8 +216,12 @@ export type SaveBookMutationVariables = Exact<{
 export type SaveBookMutation = (
   { __typename?: 'Mutation' }
   & { saveBook: (
-    { __typename?: 'Book' }
-    & Pick<Book, 'title' | 'author'>
+    { __typename?: 'AddBookResponse' }
+    & Pick<AddBookResponse, 'error'>
+    & { book?: Maybe<(
+      { __typename?: 'Book' }
+      & Pick<Book, 'title' | 'author'>
+    )> }
   ) }
 );
 
@@ -307,8 +317,11 @@ export function useResetPasswordMutation() {
 export const SaveBookDocument = gql`
     mutation SaveBook($book: BookInput!) {
   saveBook(book: $book) {
-    title
-    author
+    error
+    book {
+      title
+      author
+    }
   }
 }
     `;

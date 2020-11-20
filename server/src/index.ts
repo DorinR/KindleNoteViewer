@@ -9,13 +9,13 @@ import Redis from 'ioredis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
 import cors from 'cors'
-import { createConnection } from 'typeorm'
-import { User } from './entities/User'
+import { createConnection, getConnection } from 'typeorm'
 import path from 'path'
-import { SectionHighlight } from './entities/SectionHighlight'
+import { BookResolver } from './resolvers/book'
+import { User } from './entities/User'
 import { Book } from './entities/Book'
 import { BookSection } from './entities/BookSection'
-import { BookResolver } from './resolvers/book'
+import { SectionHighlight } from './entities/SectionHighlight'
 
 const main = async () => {
     const conn = await createConnection({
@@ -26,6 +26,11 @@ const main = async () => {
         migrations: [path.join(__dirname, './migrations/*')],
         entities: [User, Book, BookSection, SectionHighlight], // TODO
     })
+
+    // await getConnection().createQueryBuilder().delete().from(SectionHighlight).execute()
+    // await getConnection().createQueryBuilder().delete().from(BookSection).execute()
+    // await getConnection().createQueryBuilder().delete().from(Book).execute()
+
     // create tables in new
     if (__prod__) {
         console.log('Running migrations...')
@@ -78,7 +83,7 @@ const main = async () => {
         context: ({ req, res }) => ({ req, res, redis }),
     })
 
-    apolloServer.applyMiddleware({ app, cors: false })
+    apolloServer.applyMiddleware({ app, cors: false, bodyParserConfig: { limit: '1mb' } })
 
     app.listen(parseInt(process.env.PORT), () => {
         console.log(`server started on localhost:${process.env.PORT}`)
