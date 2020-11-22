@@ -27,6 +27,9 @@ const main = async () => {
         entities: [User, Book, BookSection, SectionHighlight], // TODO
     })
 
+    // await getConnection().dropDatabase()
+    // await createQueryBuilder('post').delete().execute()
+    // // await getConnection().createQueryBuilder().delete().from(User).execute()
     // await getConnection().createQueryBuilder().delete().from(SectionHighlight).execute()
     // await getConnection().createQueryBuilder().delete().from(BookSection).execute()
     // await getConnection().createQueryBuilder().delete().from(Book).execute()
