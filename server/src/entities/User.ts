@@ -1,14 +1,5 @@
 import { ObjectType, Field } from 'type-graphql'
-import {
-    BaseEntity,
-    Column,
-    CreateDateColumn,
-    Entity,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-} from 'typeorm'
-import { Book } from './Book'
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @ObjectType()
 @Entity()
@@ -23,9 +14,6 @@ export class User extends BaseEntity {
 
     @Column()
     password!: string
-
-    @OneToMany(() => Book, (book) => book.owner, { eager: true })
-    books?: Book[]
 
     @Field(() => String)
     @CreateDateColumn()

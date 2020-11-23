@@ -107,7 +107,6 @@ export class UserResolver {
                 .values({
                     email: options.email,
                     password: hashedPassword,
-                    books: [],
                 })
                 .returning('*')
                 .execute()

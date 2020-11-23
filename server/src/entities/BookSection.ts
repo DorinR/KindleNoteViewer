@@ -1,16 +1,5 @@
 import { ObjectType, Field } from 'type-graphql'
-import {
-    BaseEntity,
-    Column,
-    CreateDateColumn,
-    Entity,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-} from 'typeorm'
-import { Book } from './Book'
-import { SectionHighlight } from './SectionHighlight'
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @ObjectType()
 @Entity()
@@ -23,11 +12,13 @@ export class BookSection extends BaseEntity {
     @Column()
     sectionHeading!: string
 
-    @OneToMany(() => SectionHighlight, (sectionHighlight) => sectionHighlight.bookSection)
-    sectionNotes: SectionHighlight[]
+    @Field()
+    @Column()
+    owner!: string
 
-    @ManyToOne(() => Book, (book) => book.sections)
-    book!: Book
+    @Field()
+    @Column()
+    book!: string
 
     @Field(() => String)
     @CreateDateColumn()

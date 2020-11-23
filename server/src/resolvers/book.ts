@@ -6,7 +6,6 @@ import { SectionHighlight } from '../entities/SectionHighlight'
 import { BookSection } from '../entities/BookSection'
 import { BookInput } from '../types/resolverTypes'
 import { isAuth } from '../middleware/isAuth'
-import { getConnection } from 'typeorm'
 
 @ObjectType()
 class AddBookResponse {
@@ -17,11 +16,74 @@ class AddBookResponse {
     book?: Book
 }
 
+@ObjectType()
+class GetUserBooksResponse {
+    @Field({ nullable: true })
+    error?: string
+
+    @Field(() => [Book], { nullable: true })
+    books?: Book[]
+}
+
+@ObjectType()
+class Note {
+    @Field({ nullable: true })
+    note: string
+
+    constructor(note: string) {
+        this.note = note
+    }
+}
+
+@ObjectType()
+class Section {
+    @Field({ nullable: true })
+    sectionHeading: string
+
+    @Field(() => [Note], { nullable: true })
+    sectionNotes: Note[]
+
+    constructor(sectionHeading: string) {
+        this.sectionHeading = sectionHeading
+        this.sectionNotes = []
+    }
+}
+
+@ObjectType()
+class BookHighlights {
+    @Field({ nullable: true })
+    title: string
+
+    @Field({ nullable: true })
+    author: string
+
+    @Field(() => [Section], { nullable: true })
+    sections: Section[]
+
+    constructor() {
+        this.title = ''
+        this.author = ''
+        this.sections = []
+    }
+}
+
+@ObjectType()
+class GetUserBookResponse {
+    @Field({ nullable: true })
+    error?: string
+
+    @Field(() => BookHighlights, { nullable: true })
+    book?: BookHighlights
+}
+
 @Resolver()
 export class BookResolver {
     @Mutation(() => AddBookResponse)
     @UseMiddleware(isAuth)
-    async saveBook(@Arg('book', () => BookInput) book: Book, @Ctx() { req }: MyContext): Promise<AddBookResponse> {
+    async saveBook(
+        @Arg('book', () => BookInput) book: BookHighlights,
+        @Ctx() { req }: MyContext
+    ): Promise<AddBookResponse> {
         const userId = req.session.userId
         const user = await User.findOne(userId)
 
@@ -31,86 +93,91 @@ export class BookResolver {
             }
         }
 
-        // connect new book to user
+        // create book, set owner to current user
         const newBook = new Book()
         newBook.author = book.author
         newBook.title = book.title
-        // newBook.owner = user
-        newBook.sections = []
+        newBook.owner = userId
+        const newlySavedBookId = (await Book.save(newBook)).id
 
-        const highlights: SectionHighlight[] = []
-        const sections: BookSection[] = []
-
-        const bookSections = book.sections
-        bookSections.forEach((section) => {
+        book.sections.forEach(async (section) => {
             let tempSection = new BookSection()
+            tempSection.owner = userId
+            tempSection.book = newlySavedBookId.toString()
             tempSection.sectionHeading = section.sectionHeading
-            tempSection.sectionNotes = []
-            newBook.sections.push(tempSection)
-            section.sectionNotes.forEach((highlight) => {
+            let tempSectionId = (await BookSection.save(tempSection)).id
+            section.sectionNotes.forEach(async (highlight) => {
                 let tempHighlight = new SectionHighlight()
+                tempHighlight.owner = userId
+                tempHighlight.section = tempSectionId.toString()
                 tempHighlight.note = highlight.note
-                tempSection.sectionNotes.push(tempHighlight)
-                highlights.push({ ...tempHighlight } as SectionHighlight)
+                await SectionHighlight.save(tempHighlight)
             })
-            sections.push({ ...tempSection } as BookSection)
         })
-
-        // entities I want to save to DB
-        if (!user.books) {
-            user.books = [newBook]
-        } else {
-            user.books = [...user.books, newBook]
-        }
-
-        try {
-            highlights.forEach(async (highlight) => {
-                await SectionHighlight.create(highlight).save()
-            })
-            sections.forEach(async (section) => {
-                await BookSection.create(section).save()
-            })
-            await Book.create(newBook).save()
-        } catch (err) {
-            return {
-                error: err,
-            }
-        }
-
-        console.log(user)
-        await User.save(user)
 
         return {
             book: newBook,
         }
     }
 
-    @Query(() => [Book])
+    @Query(() => GetUserBooksResponse)
     @UseMiddleware(isAuth)
-    async getUserBooks(@Ctx() { req }: MyContext): Promise<Book[] | null> {
+    async getUserBooks(@Ctx() { req }: MyContext): Promise<GetUserBooksResponse> {
         const userId = req.session.userId
-        const user = await User.find()
-        // const user = await getConnection()
-        //     .getRepository(User)
-        //     .createQueryBuilder('users')
-        //     .where(userId)
-        //     .leftJoinAndSelect('users.books', 'books')
-        //     .getMany()
-
-        console.log(user)
-
-        const books = await Book.find()
-        console.log(books)
+        const user = await User.findOne(userId)
 
         if (!user) {
-            return null
+            {
+                error: 'user not found, please register new user.'
+            }
         }
 
-        // console.log(user)
-        // if (!userBooks) {
-        //     return []
-        // }
+        const userBooks = await Book.find({ where: { owner: userId } })
 
-        return []
+        return {
+            books: userBooks,
+        }
+    }
+
+    @Query(() => GetUserBookResponse)
+    @UseMiddleware(isAuth)
+    async getUserBook(@Arg('title') title: string, @Ctx() { req }: MyContext): Promise<GetUserBookResponse> {
+        const totalBook = new BookHighlights()
+        const userId = req.session.userId
+        const user = await User.findOne(userId)
+
+        if (!user) {
+            return {
+                error: 'user not found, please register new user.',
+            }
+        }
+
+        const book = await Book.findOne({ where: { owner: userId, title } })
+        if (!book) {
+            return {
+                error: `"${title}" does not exist in this user's book library`,
+            }
+        } else {
+            totalBook.title = book.title
+            totalBook.author = book.author
+        }
+
+        const sections = await BookSection.find({ where: { owner: userId, book: book.id.toString() } })
+        const totalBookSections: Section[] = []
+        for (const section of sections) {
+            let tempSection = new Section(section.sectionHeading)
+            let tempHighlights = await SectionHighlight.find({ where: { owner: userId, section: section.id } })
+            tempHighlights.forEach((highlight) => {
+                let tempHighlight = new Note(highlight.note)
+                tempSection.sectionNotes.push(tempHighlight)
+            })
+            totalBookSections.push(tempSection)
+        }
+
+        totalBook.sections = totalBookSections
+
+        return {
+            book: totalBook,
+        }
     }
 }
