@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone'
 import { createUseStyles } from 'react-jss'
 import validateUploadedFile from '../utils/validateFileType'
 import swal from 'sweetalert'
+import { useColorModeValue } from '@chakra-ui/react'
 
 interface FileUploaderProps {
     setRawHtml: React.Dispatch<React.SetStateAction<string>>
@@ -17,10 +18,7 @@ const useStyles = createUseStyles({
         padding: '20px',
         borderWidth: '2px',
         borderRadius: '2px',
-        borderColor: '#EEEEEE',
         borderStyle: 'dashed',
-        backgroundColor: '#FAFAFA',
-        color: '#bdbdbd',
         outline: 'none',
         transition: 'border .24s ease-in-out',
     },
@@ -28,6 +26,9 @@ const useStyles = createUseStyles({
 
 const FileUploader: React.FC<FileUploaderProps> = ({ setRawHtml }) => {
     const classes = useStyles()
+    const borderColor = useColorModeValue('#EEEEEE', 'white')
+    const backgroundColor = useColorModeValue('#FAFAFA', '#2C323D')
+    const color = useColorModeValue('#BDBDBD', 'white')
 
     const onDrop = useCallback((acceptedFiles) => {
         acceptedFiles.forEach((file: any) => {
@@ -54,7 +55,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ setRawHtml }) => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
     return (
-        <div {...getRootProps()} className={classes.dropzone}>
+        <div {...getRootProps()} className={classes.dropzone} style={{ color, borderColor, backgroundColor }}>
             <input {...getInputProps()} />
             <p>Drag 'n' drop your book highlights HTML file, or click to browse and select file</p>
         </div>

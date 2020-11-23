@@ -24,8 +24,6 @@ const AddBook: React.FC = ({}) => {
 
     const saveUserBook = async (book: BookInput) => {
         const response = await saveBook({ book })
-        console.log('saveBook response')
-        console.log(response)
         if (response.data?.saveBook.error) {
             swal('Something went wrong', response.data?.saveBook.error, 'error')
         } else {
