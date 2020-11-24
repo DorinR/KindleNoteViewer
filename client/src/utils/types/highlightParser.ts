@@ -12,3 +12,9 @@ export interface BookHighlights {
     author: string
     sections: Section[]
 }
+
+export interface Book {
+    id: string
+    title: string
+    author: string
+}

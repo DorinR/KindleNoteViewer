@@ -28,6 +28,11 @@
       "static/chunks/main.js",
       "static/chunks/webpack.js",
       "static/chunks/pages/books/add-book.js"
+    ],
+    "/books/my-books": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/books/my-books.js"
     ]
   },
   "ampFirstPages": []

@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, useColorMode, IconButton } from '@chakra-ui/react'
+import { Box, Button, Flex, useColorMode, IconButton } from '@chakra-ui/react'
 import React from 'react'
 import NextLink from 'next/link'
 import { useLogoutMutation, useMeQuery } from '../generated/graphql'
@@ -56,9 +56,9 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                     </NextLink>
                 ) : null}
                 {data?.me ? (
-                    <NextLink href='/books/add-book'>
+                    <NextLink href='/books/my-books'>
                         <Button size='sm' mr={4}>
-                            view highlights
+                            my books
                         </Button>
                     </NextLink>
                 ) : null}
