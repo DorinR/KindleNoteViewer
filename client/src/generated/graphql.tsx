@@ -16,11 +16,18 @@ export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
   getUser: User;
+  getUserBooks: GetUserBooksResponse;
+  getUserBook: GetUserBookResponse;
 };
 
 
 export type QueryGetUserArgs = {
   email: Scalars['String'];
+};
+
+
+export type QueryGetUserBookArgs = {
+  title: Scalars['String'];
 };
 
 export type User = {
@@ -29,6 +36,46 @@ export type User = {
   email: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type GetUserBooksResponse = {
+  __typename?: 'GetUserBooksResponse';
+  error?: Maybe<Scalars['String']>;
+  books?: Maybe<Array<Book>>;
+};
+
+export type Book = {
+  __typename?: 'Book';
+  id: Scalars['Float'];
+  title: Scalars['String'];
+  author: Scalars['String'];
+  owner: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type GetUserBookResponse = {
+  __typename?: 'GetUserBookResponse';
+  error?: Maybe<Scalars['String']>;
+  book?: Maybe<BookHighlights>;
+};
+
+export type BookHighlights = {
+  __typename?: 'BookHighlights';
+  title?: Maybe<Scalars['String']>;
+  author?: Maybe<Scalars['String']>;
+  sections?: Maybe<Array<Section>>;
+};
+
+export type Section = {
+  __typename?: 'Section';
+  sectionHeading?: Maybe<Scalars['String']>;
+  sectionNotes?: Maybe<Array<Note>>;
+};
+
+export type Note = {
+  __typename?: 'Note';
+  note?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -98,15 +145,6 @@ export type AddBookResponse = {
   __typename?: 'AddBookResponse';
   error?: Maybe<Scalars['String']>;
   book?: Maybe<Book>;
-};
-
-export type Book = {
-  __typename?: 'Book';
-  id: Scalars['Float'];
-  title: Scalars['String'];
-  author: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
 };
 
 export type BookInput = {
@@ -225,6 +263,21 @@ export type SaveBookMutation = (
   ) }
 );
 
+export type GetUserBooksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserBooksQuery = (
+  { __typename?: 'Query' }
+  & { getUserBooks: (
+    { __typename?: 'GetUserBooksResponse' }
+    & Pick<GetUserBooksResponse, 'error'>
+    & { books?: Maybe<Array<(
+      { __typename?: 'Book' }
+      & Pick<Book, 'id' | 'title' | 'author'>
+    )>> }
+  ) }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -328,6 +381,22 @@ export const SaveBookDocument = gql`
 
 export function useSaveBookMutation() {
   return Urql.useMutation<SaveBookMutation, SaveBookMutationVariables>(SaveBookDocument);
+};
+export const GetUserBooksDocument = gql`
+    query GetUserBooks {
+  getUserBooks {
+    error
+    books {
+      id
+      title
+      author
+    }
+  }
+}
+    `;
+
+export function useGetUserBooksQuery(options: Omit<Urql.UseQueryArgs<GetUserBooksQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetUserBooksQuery>({ query: GetUserBooksDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {

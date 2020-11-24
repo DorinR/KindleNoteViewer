@@ -3,41 +3,14 @@ import { FormShaper } from '../../components/FormShaper'
 import { NavBar } from '../../components/NavBar'
 import { Text, Box, useColorModeValue } from '@chakra-ui/react'
 import { Book } from '../../utils/types/highlightParser'
-import { randomNumber } from '../../utils/randomNumber'
 import NextLink from 'next/link'
+import { useGetUserBooksQuery } from '../../generated/graphql'
 
 const MyBooks: React.FC = ({}) => {
+    const [{ data, fetching }] = useGetUserBooksQuery()
     let renderedBooks = null
-    let mockBooks: Book[] = [
-        {
-            id: '1',
-            title: 'Porn Generation',
-            author: 'Ben Shapiro',
-        },
-        {
-            id: '2',
-            title: 'Courage to be Disliked',
-            author: 'Hikaru Nakamura',
-        },
-    ]
 
-    setTimeout(() => {
-        mockBooks = [
-            {
-                id: '1',
-                title: 'Porn Generation',
-                author: 'Ben Shapiro',
-            },
-            {
-                id: '2',
-                title: 'Courage to be Disliked',
-                author: 'Hikaru Nakamura',
-            },
-        ]
-        console.log('updating mockbooks...')
-        console.log(mockBooks)
-    }, 3000)
-
+    // dark/light mode stylings
     const borderColor = useColorModeValue('grey.300', 'white')
     const backgroundColor = useColorModeValue('#FAFAFA', '#2C323D')
     const color = useColorModeValue('grey.600', 'white')
@@ -48,16 +21,16 @@ const MyBooks: React.FC = ({}) => {
         boxShadow: onHoverBoxShadow,
     }
 
-    const getBox = (book: Book) => {
+    const getBox = (book: Book, key: number) => {
         return (
-            <NextLink href={`/books/${book.id}`}>
+            <NextLink href={`/books/${book.id}`} key={key}>
                 <Box
                     mb={5}
                     p={4}
                     fontWeight='semibold'
                     cursor='pointer'
                     as='h2'
-                    key={randomNumber(1, 1000000)}
+                    key={key}
                     bg={backgroundColor}
                     borderColor={borderColor}
                     borderWidth='1px'
@@ -70,14 +43,17 @@ const MyBooks: React.FC = ({}) => {
             </NextLink>
         )
     }
-    if (mockBooks.length == 0) {
-        // do nothing
+    if (fetching) {
+        // do nothing (maybe add loading animation later)
     } else {
-        console.log('should run after mockboooks gets updated')
         let userBooks: JSX.Element[] = []
-        mockBooks.forEach((book) => {
-            userBooks.push(getBox(book))
-        })
+        let key = 1
+        if (data?.getUserBooks.books) {
+            data?.getUserBooks.books.forEach((book) => {
+                userBooks.push(getBox(book, key))
+                key += 1
+            })
+        }
         renderedBooks = userBooks
     }
 

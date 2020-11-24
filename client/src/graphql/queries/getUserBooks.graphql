@@ -1,0 +1,10 @@
+query GetUserBooks {
+    getUserBooks {
+        error
+        books {
+            id
+            title
+            author
+        }
+    }
+}
