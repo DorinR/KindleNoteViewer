@@ -24,10 +24,10 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/books/my-books": [
+    "/books/[id]": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/books/my-books.js"
+      "static/chunks/pages/books/[id].js"
     ],
     "/login": [
       "static/chunks/main.js",

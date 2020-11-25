@@ -141,7 +141,7 @@ export class BookResolver {
 
     @Query(() => GetUserBookResponse)
     @UseMiddleware(isAuth)
-    async getUserBook(@Arg('title') title: string, @Ctx() { req }: MyContext): Promise<GetUserBookResponse> {
+    async getUserBook(@Arg('id') id: string, @Ctx() { req }: MyContext): Promise<GetUserBookResponse> {
         const totalBook = new BookHighlights()
         const userId = req.session.userId
         const user = await User.findOne(userId)
@@ -152,10 +152,10 @@ export class BookResolver {
             }
         }
 
-        const book = await Book.findOne({ where: { owner: userId, title } })
+        const book = await Book.findOne({ where: { owner: userId, id } })
         if (!book) {
             return {
-                error: `"${title}" does not exist in this user's book library`,
+                error: `"${id}" does not exist in this user's book library`,
             }
         } else {
             totalBook.title = book.title

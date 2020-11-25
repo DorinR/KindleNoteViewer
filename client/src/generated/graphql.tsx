@@ -27,7 +27,7 @@ export type QueryGetUserArgs = {
 
 
 export type QueryGetUserBookArgs = {
-  title: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type User = {
@@ -263,6 +263,31 @@ export type SaveBookMutation = (
   ) }
 );
 
+export type GetUserBookQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetUserBookQuery = (
+  { __typename?: 'Query' }
+  & { getUserBook: (
+    { __typename?: 'GetUserBookResponse' }
+    & Pick<GetUserBookResponse, 'error'>
+    & { book?: Maybe<(
+      { __typename?: 'BookHighlights' }
+      & Pick<BookHighlights, 'title' | 'author'>
+      & { sections?: Maybe<Array<(
+        { __typename?: 'Section' }
+        & Pick<Section, 'sectionHeading'>
+        & { sectionNotes?: Maybe<Array<(
+          { __typename?: 'Note' }
+          & Pick<Note, 'note'>
+        )>> }
+      )>> }
+    )> }
+  ) }
+);
+
 export type GetUserBooksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -381,6 +406,27 @@ export const SaveBookDocument = gql`
 
 export function useSaveBookMutation() {
   return Urql.useMutation<SaveBookMutation, SaveBookMutationVariables>(SaveBookDocument);
+};
+export const GetUserBookDocument = gql`
+    query GetUserBook($id: String!) {
+  getUserBook(id: $id) {
+    error
+    book {
+      title
+      author
+      sections {
+        sectionHeading
+        sectionNotes {
+          note
+        }
+      }
+    }
+  }
+}
+    `;
+
+export function useGetUserBookQuery(options: Omit<Urql.UseQueryArgs<GetUserBookQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetUserBookQuery>({ query: GetUserBookDocument, ...options });
 };
 export const GetUserBooksDocument = gql`
     query GetUserBooks {

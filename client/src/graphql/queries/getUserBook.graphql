@@ -1,0 +1,15 @@
+query GetUserBook($id: String!) {
+    getUserBook(id: $id) {
+        error
+        book {
+            title
+            author
+            sections {
+                sectionHeading
+                sectionNotes {
+                    note
+                }
+            }
+        }
+    }
+}
