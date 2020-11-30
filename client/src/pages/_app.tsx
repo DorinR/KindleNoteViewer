@@ -1,6 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { Provider, createClient } from 'urql'
-import theme from '../theme'
 
 console.log('process.env.NEXT_PUBLIC_API_URL', process.env.NEXT_PUBLIC_API_URL)
 const client = createClient({
