@@ -29,10 +29,10 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/books/[id].js"
     ],
-    "/books/add-book": [
+    "/books/my-books": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/books/add-book.js"
+      "static/chunks/pages/books/my-books.js"
     ]
   },
   "ampFirstPages": []

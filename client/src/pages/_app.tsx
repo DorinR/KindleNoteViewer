@@ -1,5 +1,6 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { Provider, createClient } from 'urql'
+import boxStyles from '../theme/box'
 
 console.log('process.env.NEXT_PUBLIC_API_URL', process.env.NEXT_PUBLIC_API_URL)
 const client = createClient({
@@ -10,10 +11,16 @@ const client = createClient({
     requestPolicy: 'network-only',
 })
 
+const theme = extendTheme({
+    layerStyles: {
+        ...boxStyles,
+    },
+})
+
 function MyApp({ Component, pageProps }: any) {
     return (
         <Provider value={client}>
-            <ChakraProvider>
+            <ChakraProvider theme={theme}>
                 <Component {...pageProps} />
             </ChakraProvider>
         </Provider>

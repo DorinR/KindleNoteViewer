@@ -1,10 +1,11 @@
 import React from 'react'
 import { FormShaper } from '../../components/FormShaper'
 import { NavBar } from '../../components/NavBar'
-import { Accordion, Text, Skeleton, Spinner, Center } from '@chakra-ui/react'
+import { Accordion, Spinner, Center } from '@chakra-ui/react'
 import { useGetIntId } from '../../utils/getId'
 import { useGetUserBookQuery } from '../../generated/graphql'
 import genBook from '../../components/component-gen/genBook'
+import BookHeader from '../../components/book/bookHeader'
 
 const MyBooks: React.FC = ({}) => {
     const intId = useGetIntId()
@@ -21,18 +22,11 @@ const MyBooks: React.FC = ({}) => {
         <>
             <NavBar />
             <FormShaper>
-                {fetching ? (
-                    <Skeleton mb={4} height='50px' />
-                ) : (
-                    <Text fontSize='5xl'>{data?.getUserBook.book?.title}</Text>
-                )}
-                {fetching ? (
-                    <Skeleton height='30px' />
-                ) : (
-                    <Text fontSize='3xl' mb={5}>
-                        By: {data?.getUserBook.book?.author}
-                    </Text>
-                )}
+                <BookHeader
+                    title={data?.getUserBook.book?.title}
+                    author={data?.getUserBook.book?.author}
+                    isLoading={fetching}
+                />
                 {fetching ? (
                     <Center>
                         <Spinner size='xl' mt={10} />
