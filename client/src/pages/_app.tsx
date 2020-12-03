@@ -1,6 +1,6 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { Provider, createClient } from 'urql'
-import boxStyles from '../theme/box'
+import { titleAuthorBoxStyles, highlightBoxStyles } from '../theme/box'
 
 console.log('process.env.NEXT_PUBLIC_API_URL', process.env.NEXT_PUBLIC_API_URL)
 const client = createClient({
@@ -13,7 +13,8 @@ const client = createClient({
 
 const theme = extendTheme({
     layerStyles: {
-        ...boxStyles,
+        ...titleAuthorBoxStyles,
+        ...highlightBoxStyles,
     },
 })
 

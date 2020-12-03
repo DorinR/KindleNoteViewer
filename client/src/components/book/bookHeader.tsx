@@ -16,7 +16,7 @@ const BookHeader: React.FC<BookHeaderProps> = ({ title, author, isLoading }) => 
                     <Skeleton height='30px' mb={5} />
                 </>
             ) : (
-                <Box layerStyle={`customBox` + useColorModeValue('', '_dark')}>
+                <Box layerStyle={`titleAuthorBox` + useColorModeValue('', '_dark')}>
                     <Text fontSize='5xl'>{title}</Text>
                     <Text fontSize='2xl' as='i'>
                         {author}
