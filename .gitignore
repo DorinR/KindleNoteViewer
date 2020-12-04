@@ -8,8 +8,11 @@ node_modules/
 # testing
 /coverage
 
+# vercel
+.vercel
+
 # next.js
-/.next/
+.next/
 /out/
 
 # production
