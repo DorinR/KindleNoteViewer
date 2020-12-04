@@ -17,7 +17,11 @@ const genSection = (section: Section) => {
 
     if (section.sectionNotes) {
         section.sectionNotes.forEach((note) => {
-            notes.push(genNote(note))
+            if (note.note) {
+                if (note.note.length > 3) {
+                    notes.push(genNote(note))
+                }
+            }
         })
     }
 
