@@ -27,7 +27,7 @@ const genSection = (section: Section) => {
 
     const renderedSection = (
         <AccordionItem>
-            <AccordionButton>
+            <AccordionButton _expanded={{ bg: useColorModeValue('red.300', 'red.500') }}>
                 <Box flex='1' textAlign='left'>
                     {section.sectionHeading}
                 </Box>

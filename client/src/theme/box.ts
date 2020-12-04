@@ -4,7 +4,7 @@ import { boxRoundedCornersRight, borderBgLight, borderBgDark } from './boxFragme
 const titleAuthorBox = {
     ...boxRoundedCornersRight,
     ...borderBgLight,
-    mb: 5,
+    mb: 3,
     p: 3,
     borderLeftWidth: '10px',
 }
