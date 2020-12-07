@@ -50,6 +50,24 @@ class Section {
 }
 
 @ObjectType()
+class GetSectionHeadingsResponse {
+    @Field({ nullable: true })
+    error?: string
+
+    @Field(() => [BookSection], { nullable: true })
+    sectionHeadings?: BookSection[]
+}
+
+@ObjectType()
+class GetSectionHighlightsResponse {
+    @Field({ nullable: true })
+    error?: string
+
+    @Field(() => [SectionHighlight], { nullable: true })
+    sectionHighlights?: SectionHighlight[]
+}
+
+@ObjectType()
 class BookHighlights {
     @Field({ nullable: true })
     title: string
@@ -178,6 +196,62 @@ export class BookResolver {
 
         return {
             book: totalBook,
+        }
+    }
+
+    @Query(() => GetSectionHeadingsResponse)
+    @UseMiddleware(isAuth)
+    async getSectionHeadings(
+        @Arg('bookId') bookId: string,
+        @Ctx() { req }: MyContext
+    ): Promise<GetSectionHeadingsResponse> {
+        const userId = req.session.userId
+        const user = await User.findOne(userId)
+
+        if (!user) {
+            return {
+                error: 'user not found, please register new user.',
+            }
+        }
+
+        const book = await Book.findOne({ where: { owner: userId, id: bookId } })
+        if (!book) {
+            return {
+                error: `"${bookId}" does not exist in this user's book library`,
+            }
+        }
+        const sections = await BookSection.find({ where: { owner: userId, book: book.id.toString() } })
+
+        return {
+            sectionHeadings: sections,
+        }
+    }
+
+    @Query(() => GetSectionHighlightsResponse)
+    @UseMiddleware(isAuth)
+    async getSectionHighlights(
+        @Arg('sectionId') sectionId: string,
+        @Ctx() { req }: MyContext
+    ): Promise<GetSectionHighlightsResponse> {
+        const userId = req.session.userId
+        const user = await User.findOne(userId)
+
+        if (!user) {
+            return {
+                error: 'user not found, please register new user.',
+            }
+        }
+
+        let sectionHighlights = await SectionHighlight.find({ where: { owner: userId, section: sectionId } })
+
+        if (sectionHighlights.length === 0) {
+            return {
+                error: `No highlights for section id ${sectionId}`,
+            }
+        }
+
+        return {
+            sectionHighlights,
         }
     }
 }
