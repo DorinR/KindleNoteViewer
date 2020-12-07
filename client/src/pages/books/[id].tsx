@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormShaper } from '../../components/FormShaper'
 import { NavBar } from '../../components/NavBar'
-import { Spinner, Center } from '@chakra-ui/react'
+import { Spinner, Center, Text } from '@chakra-ui/react'
 import { useGetIntId } from '../../utils/getId'
 import { useGetBookDetailsQuery } from '../../generated/graphql'
 import BookHeader from '../../components/book/bookHeader'
@@ -15,11 +15,10 @@ const MyBooks: React.FC = ({}) => {
 
     if (!fetching) {
         if (data?.getBookHeadings.bookHeadings) {
-            const headings: JSX.Element[] = []
+            const headings: any = []
             let key = 1
             data?.getBookHeadings.bookHeadings?.forEach((bookHeading) => {
-                console.log(bookHeading)
-                headings.push(genHeading(bookHeading.id.toString(), bookHeading.sectionHeading, key))
+                headings.push(genHeading({ id: bookHeading.id.toString(), text: bookHeading.sectionHeading, key: key }))
                 key += 1
             })
             bookHeadings = headings
@@ -30,13 +29,15 @@ const MyBooks: React.FC = ({}) => {
         <>
             <NavBar />
             <FormShaper>
-                <BackButton href='/books/my-books' linkText='all books' />
                 <BookHeader
                     title={data?.getBookDetails.bookDetails?.title}
                     author={data?.getBookDetails.bookDetails?.author}
                     isLoading={fetching}
                 />
-
+                <Text fontSize='5xl' mb={5}>
+                    sections
+                </Text>
+                <BackButton href='/books/my-books' linkText='all books' />
                 {fetching ? (
                     <Center>
                         <Spinner size='xl' mt={10} />

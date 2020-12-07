@@ -40,7 +40,6 @@ const standardShadowBox = {
     borderColor: 'grey.300',
     borderWidth: '1px',
     color: 'grey.600',
-    rounded: 'lg',
     transitionDuration: '0.2s',
     _hover: { shadow: 'lg', boxShadow: 'lg' },
 }
@@ -48,9 +47,10 @@ const standardShadowBox = {
 const standardShadowBox_dark = {
     ...standardShadowBox,
     bg: '#2C323D',
-    borderColor: 'white',
+    borderColor: 'grey.400',
+    borderWidth: '2px',
     color: 'white',
-    _hover: { shadow: 'lg', boxShadow: '0 0 15px -2px white' },
+    _hover: { shadow: 'lg', boxShadow: '0 0 10px -2px grey' },
 }
 
 export const standardShadowBoxStyles = { standardShadowBox, standardShadowBox_dark }
