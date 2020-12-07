@@ -1,0 +1,8 @@
+query getSectionHighlights($sectionId: String!) {
+    getSectionHighlights(sectionId: $sectionId) {
+        error
+        sectionHighlights {
+            note
+        }
+    }
+}

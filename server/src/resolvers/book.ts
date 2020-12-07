@@ -50,12 +50,12 @@ class Section {
 }
 
 @ObjectType()
-class GetSectionHeadingsResponse {
+class GetBookHeadingsResponse {
     @Field({ nullable: true })
     error?: string
 
     @Field(() => [BookSection], { nullable: true })
-    sectionHeadings?: BookSection[]
+    bookHeadings?: BookSection[]
 }
 
 @ObjectType()
@@ -92,6 +92,24 @@ class GetUserBookResponse {
 
     @Field(() => BookHighlights, { nullable: true })
     book?: BookHighlights
+}
+
+@ObjectType()
+class BookDetail {
+    @Field()
+    title: string
+
+    @Field()
+    author: string
+}
+
+@ObjectType()
+class GetUserBookDetailsResponse {
+    @Field({ nullable: true })
+    error?: string
+
+    @Field(() => BookDetail, { nullable: true })
+    bookDetails?: BookDetail
 }
 
 @Resolver()
@@ -157,6 +175,33 @@ export class BookResolver {
         }
     }
 
+    @Query(() => GetUserBookDetailsResponse)
+    @UseMiddleware(isAuth)
+    async getBookDetails(
+        @Arg('bookId') bookId: string,
+        @Ctx() { req }: MyContext
+    ): Promise<GetUserBookDetailsResponse> {
+        const userId = req.session.userId
+        const user = await User.findOne(userId)
+
+        if (!user) {
+            {
+                error: 'user not found, please register new user.'
+            }
+        }
+
+        const book = await Book.findOne({ where: { id: bookId } })
+        if (!book) {
+            return {
+                error: 'Book not found for this user',
+            }
+        }
+
+        return {
+            bookDetails: { title: book.title, author: book.author },
+        }
+    }
+
     @Query(() => GetUserBookResponse)
     @UseMiddleware(isAuth)
     async getUserBook(@Arg('id') id: string, @Ctx() { req }: MyContext): Promise<GetUserBookResponse> {
@@ -199,12 +244,9 @@ export class BookResolver {
         }
     }
 
-    @Query(() => GetSectionHeadingsResponse)
+    @Query(() => GetBookHeadingsResponse)
     @UseMiddleware(isAuth)
-    async getSectionHeadings(
-        @Arg('bookId') bookId: string,
-        @Ctx() { req }: MyContext
-    ): Promise<GetSectionHeadingsResponse> {
+    async getBookHeadings(@Arg('bookId') bookId: string, @Ctx() { req }: MyContext): Promise<GetBookHeadingsResponse> {
         const userId = req.session.userId
         const user = await User.findOne(userId)
 
@@ -223,7 +265,7 @@ export class BookResolver {
         const sections = await BookSection.find({ where: { owner: userId, book: book.id.toString() } })
 
         return {
-            sectionHeadings: sections,
+            bookHeadings: sections,
         }
     }
 

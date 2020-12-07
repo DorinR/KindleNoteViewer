@@ -1,0 +1,9 @@
+query GetBookHeadings($bookId: String!) {
+    getBookHeadings(bookId: $bookId) {
+        error
+        bookHeadings {
+            id
+            sectionHeading
+        }
+    }
+}

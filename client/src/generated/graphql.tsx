@@ -17,7 +17,10 @@ export type Query = {
   me?: Maybe<User>;
   getUser: User;
   getUserBooks: GetUserBooksResponse;
+  getBookDetails: GetUserBookDetailsResponse;
   getUserBook: GetUserBookResponse;
+  getBookHeadings: GetBookHeadingsResponse;
+  getSectionHighlights: GetSectionHighlightsResponse;
 };
 
 
@@ -26,8 +29,23 @@ export type QueryGetUserArgs = {
 };
 
 
+export type QueryGetBookDetailsArgs = {
+  bookId: Scalars['String'];
+};
+
+
 export type QueryGetUserBookArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryGetBookHeadingsArgs = {
+  bookId: Scalars['String'];
+};
+
+
+export type QueryGetSectionHighlightsArgs = {
+  sectionId: Scalars['String'];
 };
 
 export type User = {
@@ -54,6 +72,18 @@ export type Book = {
   updatedAt: Scalars['String'];
 };
 
+export type GetUserBookDetailsResponse = {
+  __typename?: 'GetUserBookDetailsResponse';
+  error?: Maybe<Scalars['String']>;
+  bookDetails?: Maybe<BookDetail>;
+};
+
+export type BookDetail = {
+  __typename?: 'BookDetail';
+  title: Scalars['String'];
+  author: Scalars['String'];
+};
+
 export type GetUserBookResponse = {
   __typename?: 'GetUserBookResponse';
   error?: Maybe<Scalars['String']>;
@@ -76,6 +106,38 @@ export type Section = {
 export type Note = {
   __typename?: 'Note';
   note?: Maybe<Scalars['String']>;
+};
+
+export type GetBookHeadingsResponse = {
+  __typename?: 'GetBookHeadingsResponse';
+  error?: Maybe<Scalars['String']>;
+  bookHeadings?: Maybe<Array<BookSection>>;
+};
+
+export type BookSection = {
+  __typename?: 'BookSection';
+  id: Scalars['Float'];
+  sectionHeading: Scalars['String'];
+  owner: Scalars['String'];
+  book: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type GetSectionHighlightsResponse = {
+  __typename?: 'GetSectionHighlightsResponse';
+  error?: Maybe<Scalars['String']>;
+  sectionHighlights?: Maybe<Array<SectionHighlight>>;
+};
+
+export type SectionHighlight = {
+  __typename?: 'SectionHighlight';
+  id: Scalars['Float'];
+  note: Scalars['String'];
+  owner: Scalars['String'];
+  section: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type Mutation = {
@@ -263,6 +325,62 @@ export type SaveBookMutation = (
   ) }
 );
 
+export type GetBookDetailsQueryVariables = Exact<{
+  bookId: Scalars['String'];
+}>;
+
+
+export type GetBookDetailsQuery = (
+  { __typename?: 'Query' }
+  & { getBookHeadings: (
+    { __typename?: 'GetBookHeadingsResponse' }
+    & { bookHeadings?: Maybe<Array<(
+      { __typename?: 'BookSection' }
+      & Pick<BookSection, 'sectionHeading' | 'id'>
+    )>> }
+  ), getBookDetails: (
+    { __typename?: 'GetUserBookDetailsResponse' }
+    & { bookDetails?: Maybe<(
+      { __typename?: 'BookDetail' }
+      & Pick<BookDetail, 'title' | 'author'>
+    )> }
+  ) }
+);
+
+export type GetBookHeadingsQueryVariables = Exact<{
+  bookId: Scalars['String'];
+}>;
+
+
+export type GetBookHeadingsQuery = (
+  { __typename?: 'Query' }
+  & { getBookHeadings: (
+    { __typename?: 'GetBookHeadingsResponse' }
+    & Pick<GetBookHeadingsResponse, 'error'>
+    & { bookHeadings?: Maybe<Array<(
+      { __typename?: 'BookSection' }
+      & Pick<BookSection, 'id' | 'sectionHeading'>
+    )>> }
+  ) }
+);
+
+export type GetSectionHighlightsQueryVariables = Exact<{
+  sectionId: Scalars['String'];
+}>;
+
+
+export type GetSectionHighlightsQuery = (
+  { __typename?: 'Query' }
+  & { getSectionHighlights: (
+    { __typename?: 'GetSectionHighlightsResponse' }
+    & Pick<GetSectionHighlightsResponse, 'error'>
+    & { sectionHighlights?: Maybe<Array<(
+      { __typename?: 'SectionHighlight' }
+      & Pick<SectionHighlight, 'note'>
+    )>> }
+  ) }
+);
+
 export type GetUserBookQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -406,6 +524,55 @@ export const SaveBookDocument = gql`
 
 export function useSaveBookMutation() {
   return Urql.useMutation<SaveBookMutation, SaveBookMutationVariables>(SaveBookDocument);
+};
+export const GetBookDetailsDocument = gql`
+    query GetBookDetails($bookId: String!) {
+  getBookHeadings(bookId: $bookId) {
+    bookHeadings {
+      sectionHeading
+      id
+    }
+  }
+  getBookDetails(bookId: $bookId) {
+    bookDetails {
+      title
+      author
+    }
+  }
+}
+    `;
+
+export function useGetBookDetailsQuery(options: Omit<Urql.UseQueryArgs<GetBookDetailsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetBookDetailsQuery>({ query: GetBookDetailsDocument, ...options });
+};
+export const GetBookHeadingsDocument = gql`
+    query GetBookHeadings($bookId: String!) {
+  getBookHeadings(bookId: $bookId) {
+    error
+    bookHeadings {
+      id
+      sectionHeading
+    }
+  }
+}
+    `;
+
+export function useGetBookHeadingsQuery(options: Omit<Urql.UseQueryArgs<GetBookHeadingsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetBookHeadingsQuery>({ query: GetBookHeadingsDocument, ...options });
+};
+export const GetSectionHighlightsDocument = gql`
+    query getSectionHighlights($sectionId: String!) {
+  getSectionHighlights(sectionId: $sectionId) {
+    error
+    sectionHighlights {
+      note
+    }
+  }
+}
+    `;
+
+export function useGetSectionHighlightsQuery(options: Omit<Urql.UseQueryArgs<GetSectionHighlightsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetSectionHighlightsQuery>({ query: GetSectionHighlightsDocument, ...options });
 };
 export const GetUserBookDocument = gql`
     query GetUserBook($id: String!) {

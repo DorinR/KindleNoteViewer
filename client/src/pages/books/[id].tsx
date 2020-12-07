@@ -1,20 +1,27 @@
 import React from 'react'
 import { FormShaper } from '../../components/FormShaper'
 import { NavBar } from '../../components/NavBar'
-import { Accordion, Spinner, Center } from '@chakra-ui/react'
+import { Spinner, Center } from '@chakra-ui/react'
 import { useGetIntId } from '../../utils/getId'
-import { useGetUserBookQuery } from '../../generated/graphql'
-import genBook from '../../components/component-gen/genBook'
+import { useGetBookDetailsQuery } from '../../generated/graphql'
 import BookHeader from '../../components/book/bookHeader'
+import genHeading from '../../components/component-gen/genHeading'
 
 const MyBooks: React.FC = ({}) => {
     const intId = useGetIntId()
-    const [{ data, fetching }] = useGetUserBookQuery({ variables: { id: intId.toString() } })
-    let bookHighlights = null
+    const [{ data, fetching }] = useGetBookDetailsQuery({ variables: { bookId: intId.toString() } })
+    let bookHeadings = null
 
     if (!fetching) {
-        if (data?.getUserBook.book) {
-            bookHighlights = genBook(data?.getUserBook.book)
+        if (data?.getBookHeadings.bookHeadings) {
+            const headings: JSX.Element[] = []
+            let key = 1
+            data?.getBookHeadings.bookHeadings?.forEach((bookHeading) => {
+                console.log(bookHeading)
+                headings.push(genHeading(bookHeading.id.toString(), bookHeading.sectionHeading, key))
+                key += 1
+            })
+            bookHeadings = headings
         }
     }
 
@@ -23,8 +30,8 @@ const MyBooks: React.FC = ({}) => {
             <NavBar />
             <FormShaper>
                 <BookHeader
-                    title={data?.getUserBook.book?.title}
-                    author={data?.getUserBook.book?.author}
+                    title={data?.getBookDetails.bookDetails?.title}
+                    author={data?.getBookDetails.bookDetails?.author}
                     isLoading={fetching}
                 />
                 {fetching ? (
@@ -32,7 +39,7 @@ const MyBooks: React.FC = ({}) => {
                         <Spinner size='xl' mt={10} />
                     </Center>
                 ) : (
-                    <Accordion allowMultiple>{bookHighlights}</Accordion>
+                    bookHeadings
                 )}
             </FormShaper>
         </>

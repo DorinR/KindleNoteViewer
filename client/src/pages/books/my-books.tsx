@@ -28,7 +28,7 @@ const MyBooks: React.FC = ({}) => {
             <NavBar />
             <FormShaper>
                 <Text fontSize='5xl' mb={4}>
-                    My Books
+                    books
                 </Text>
                 {renderedBooks ? renderedBooks : null}
             </FormShaper>

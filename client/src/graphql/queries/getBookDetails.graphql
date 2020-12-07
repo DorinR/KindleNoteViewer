@@ -1,0 +1,14 @@
+query GetBookDetails($bookId: String!) {
+    getBookHeadings(bookId: $bookId) {
+        bookHeadings {
+            sectionHeading
+            id
+        }
+    }
+    getBookDetails(bookId: $bookId) {
+        bookDetails {
+            title
+            author
+        }
+    }
+}
