@@ -6,6 +6,7 @@ import { useGetIntId } from '../../utils/getId'
 import { useGetBookDetailsQuery } from '../../generated/graphql'
 import BookHeader from '../../components/book/bookHeader'
 import genHeading from '../../components/component-gen/genHeading'
+import BackButton from '../../components/BackButton'
 
 const MyBooks: React.FC = ({}) => {
     const intId = useGetIntId()
@@ -29,11 +30,13 @@ const MyBooks: React.FC = ({}) => {
         <>
             <NavBar />
             <FormShaper>
+                <BackButton href='/books/my-books' linkText='all books' />
                 <BookHeader
                     title={data?.getBookDetails.bookDetails?.title}
                     author={data?.getBookDetails.bookDetails?.author}
                     isLoading={fetching}
                 />
+
                 {fetching ? (
                     <Center>
                         <Spinner size='xl' mt={10} />
