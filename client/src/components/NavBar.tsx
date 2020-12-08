@@ -1,8 +1,10 @@
-import { Box, Button, Flex, useColorMode, IconButton } from '@chakra-ui/react'
+import { Box, Button, Flex, useColorMode, IconButton, Text } from '@chakra-ui/react'
 import React from 'react'
 import NextLink from 'next/link'
 import { useLogoutMutation, useMeQuery } from '../generated/graphql'
-import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { MoonIcon, SunIcon, AddIcon, HamburgerIcon, Icon } from '@chakra-ui/icons'
+import { BiLogOut, BiLogIn, BiHomeSmile } from 'react-icons/bi'
+import { TiUserAddOutline } from 'react-icons/ti'
 
 interface NavBarProps {}
 
@@ -24,10 +26,14 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         accountLinks = (
             <>
                 <NextLink href='/login'>
-                    <Button variant='ghost'>login</Button>
+                    <Button variant='ghost' leftIcon={<Icon as={BiLogIn} />}>
+                        login
+                    </Button>
                 </NextLink>
                 <NextLink href='/register'>
-                    <Button variant='ghost'>register</Button>
+                    <Button variant='ghost' leftIcon={<Icon as={TiUserAddOutline} />}>
+                        register
+                    </Button>
                 </NextLink>
             </>
         )
@@ -35,7 +41,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         accountLinks = (
             <Flex align='center'>
                 <Box mr={2}>{data.me.email}</Box>
-                <Button onClick={() => handleLogout()} variant='ghost'>
+                <Button onClick={() => handleLogout()} variant='ghost' leftIcon={<Icon as={BiLogOut} />}>
                     Logout
                 </Button>
             </Flex>
@@ -46,18 +52,20 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         <Flex maxWidth='800px' p={4} align='center' m={'auto'}>
             <Box mr={'auto'}>
                 <NextLink href='/'>
-                    <Button mr={4}>kindle notes</Button>
+                    <Button as='button' variant='ghost' leftIcon={<Icon as={BiHomeSmile} />} mr={4}>
+                        Kindle Notes
+                    </Button>
                 </NextLink>
                 {data?.me ? (
                     <NextLink href='/books/add-book'>
-                        <Button size='sm' mr={4}>
+                        <Button variant='ghost' size='sm' mr={4} leftIcon={<AddIcon />}>
                             add book
                         </Button>
                     </NextLink>
                 ) : null}
                 {data?.me ? (
                     <NextLink href='/books/my-books'>
-                        <Button size='sm' mr={4}>
+                        <Button variant='ghost' size='sm' mr={4} leftIcon={<HamburgerIcon />}>
                             my books
                         </Button>
                     </NextLink>

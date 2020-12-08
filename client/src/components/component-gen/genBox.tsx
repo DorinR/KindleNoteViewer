@@ -5,10 +5,11 @@ import { Book } from '../../utils/types/highlightParser'
 
 const genBox = (book: Book, key: number) => {
     // dark/light mode stylings
-    const borderColor = useColorModeValue('grey.300', 'white')
+    const borderColor = useColorModeValue('grey.300', 'grey.400')
     const backgroundColor = useColorModeValue('#FAFAFA', '#2C323D')
     const color = useColorModeValue('grey.600', 'white')
-    const onHoverBoxShadow = useColorModeValue('lg', '0 0 15px -2px white')
+    const onHoverBoxShadow = useColorModeValue('lg', '0 0 10px -2px grey')
+    const borderWidth = useColorModeValue('1px', '2px')
 
     const onHoverStyle = {
         shadow: 'lg',
@@ -26,7 +27,7 @@ const genBox = (book: Book, key: number) => {
                 key={key}
                 bg={backgroundColor}
                 borderColor={borderColor}
-                borderWidth='1px'
+                borderWidth={borderWidth}
                 color={color}
                 rounded='lg'
                 transitionDuration='0.2s'
