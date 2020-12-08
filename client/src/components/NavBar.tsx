@@ -15,8 +15,8 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 
     let accountLinks = null
 
-    const handleLogout = () => {
-        logout()
+    const handleLogout = async () => {
+        await logout()
         runMeQuery()
     }
 
