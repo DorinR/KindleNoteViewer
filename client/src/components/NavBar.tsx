@@ -1,14 +1,16 @@
-import { Box, Button, Flex, useColorMode, IconButton } from '@chakra-ui/react'
+import { Box, Button, Flex, useColorMode, IconButton, Badge } from '@chakra-ui/react'
 import React from 'react'
 import NextLink from 'next/link'
 import { useLogoutMutation, useMeQuery } from '../generated/graphql'
 import { MoonIcon, SunIcon, AddIcon, HamburgerIcon, Icon } from '@chakra-ui/icons'
 import { BiLogOut, BiLogIn, BiHomeSmile } from 'react-icons/bi'
 import { TiUserAddOutline } from 'react-icons/ti'
+import { useRouter } from 'next/router'
 
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
+    const router = useRouter()
     const [{ data, fetching }, runMeQuery] = useMeQuery()
     const [, logout] = useLogoutMutation()
     const { colorMode, toggleColorMode } = useColorMode()
@@ -18,6 +20,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     const handleLogout = async () => {
         await logout()
         runMeQuery()
+        router.push('/')
     }
 
     if (fetching) {
@@ -26,12 +29,12 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         accountLinks = (
             <>
                 <NextLink href='/login'>
-                    <Button variant='ghost' leftIcon={<Icon as={BiLogIn} />}>
+                    <Button variant='ghost' size='sm' leftIcon={<Icon as={BiLogIn} />}>
                         login
                     </Button>
                 </NextLink>
                 <NextLink href='/register'>
-                    <Button variant='ghost' leftIcon={<Icon as={TiUserAddOutline} />}>
+                    <Button variant='ghost' size='sm' leftIcon={<Icon as={TiUserAddOutline} />}>
                         register
                     </Button>
                 </NextLink>
@@ -41,7 +44,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         accountLinks = (
             <Flex align='center'>
                 <Box mr={2}>{data.me.email}</Box>
-                <Button onClick={() => handleLogout()} variant='ghost' leftIcon={<Icon as={BiLogOut} />}>
+                <Button onClick={() => handleLogout()} size='sm' variant='ghost' leftIcon={<Icon as={BiLogOut} />}>
                     Logout
                 </Button>
             </Flex>
@@ -49,11 +52,14 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     }
 
     return (
-        <Flex maxWidth='800px' p={4} align='center' m={'auto'}>
+        <Flex maxWidth='900px' p={4} align='center' m={'auto'}>
             <Box mr={'auto'}>
                 <NextLink href='/'>
-                    <Button as='button' variant='ghost' leftIcon={<Icon as={BiHomeSmile} />} mr={4}>
-                        Kindle Notes
+                    <Button size='sm' as='button' variant='ghost' leftIcon={<Icon as={BiHomeSmile} />} mr={4}>
+                        Reading Notes
+                        <Badge ml='1' fontSize='0.8em' colorScheme='green'>
+                            Beta
+                        </Badge>
                     </Button>
                 </NextLink>
                 {data?.me ? (
@@ -70,11 +76,11 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                         </Button>
                     </NextLink>
                 ) : null}
+                <IconButton
+                    onClick={toggleColorMode}
+                    aria-label='Dark Mode'
+                    icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}></IconButton>
             </Box>
-            <IconButton
-                onClick={toggleColorMode}
-                aria-label='Dark Mode'
-                icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}></IconButton>
             <Box ml={'auto'}>{accountLinks}</Box>
         </Flex>
     )
