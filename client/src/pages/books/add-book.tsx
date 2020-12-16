@@ -18,7 +18,7 @@ const AddBook: React.FC = ({}) => {
         if (rawHtml) {
             const book: BookHighlights = extractBookHighlights(rawHtml)
             saveUserBook(book)
-            router.push('/')
+            router.push('/books/my-books/')
         }
     }, [rawHtml])
 

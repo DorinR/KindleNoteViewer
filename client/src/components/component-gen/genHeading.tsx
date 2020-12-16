@@ -12,7 +12,7 @@ const genHeading: React.FC<getHeadingProps> = ({ id, text, key }) => {
     if (id) {
         return (
             <NextLink href={`/books/section/${id}`} key={key}>
-                <Box layerStyle={'standardShadowBox' + useColorModeValue('', '_dark')}>{`${key}. ${text}`}</Box>
+                <Box layerStyle={'standardShadowBox' + useColorModeValue('', '_dark')}>{`${text}`}</Box>
             </NextLink>
         )
     } else {

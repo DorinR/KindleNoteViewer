@@ -26,7 +26,7 @@ export const changePassword: React.FC<ChangePasswordProps> = () => {
                     } else {
                         alert('Password changed successfully!')
                         setTimeout(() => {
-                            router.push('/')
+                            router.push('/books/my-books')
                         }, 1000)
                     }
                 }}>

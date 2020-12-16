@@ -4,7 +4,7 @@ import { NavBar } from '../../components/NavBar'
 import { Spinner, Center, Text } from '@chakra-ui/react'
 import { useGetIntId } from '../../utils/getId'
 import { useGetBookDetailsQuery } from '../../generated/graphql'
-import BookHeader from '../../components/book/bookHeader'
+// import BookHeader from '../../components/book/bookHeader'
 import genHeading from '../../components/component-gen/genHeading'
 import BackButton from '../../components/BackButton'
 
@@ -29,11 +29,11 @@ const MyBooks: React.FC = ({}) => {
         <>
             <NavBar />
             <FormShaper>
-                <BookHeader
+                {/* <BookHeader
                     title={data?.getBookDetails.bookDetails?.title}
                     author={data?.getBookDetails.bookDetails?.author}
                     isLoading={fetching}
-                />
+                /> */}
                 <Text fontSize='5xl' mb={5}>
                     sections
                 </Text>
