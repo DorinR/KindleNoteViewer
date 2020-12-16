@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormShaper } from '../../components/FormShaper'
 import { NavBar } from '../../components/NavBar'
-import { Text } from '@chakra-ui/react'
+import { Center, Spinner, Text } from '@chakra-ui/react'
 import { useGetUserBooksQuery } from '../../generated/graphql'
 import genBox from '../../components/component-gen/genBox'
 
@@ -30,7 +30,13 @@ const MyBooks: React.FC = ({}) => {
                 <Text fontSize='5xl' mb={4}>
                     books
                 </Text>
-                {renderedBooks ? renderedBooks : null}
+                {fetching ? (
+                    <Center>
+                        <Spinner size='xl' mt={10} />
+                    </Center>
+                ) : (
+                    renderedBooks
+                )}
             </FormShaper>
         </>
     )

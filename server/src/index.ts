@@ -18,7 +18,7 @@ import { BookSection } from './entities/BookSection'
 import { SectionHighlight } from './entities/SectionHighlight'
 
 const main = async () => {
-    const conn = await createConnection({
+    await createConnection({
         type: 'postgres',
         url: process.env.DATABASE_URL,
         logging: true,
@@ -26,14 +26,6 @@ const main = async () => {
         migrations: [path.join(__dirname, './migrations/*')],
         entities: [User, Book, BookSection, SectionHighlight], // TODO
     })
-
-    // create tables in new
-    if (__prod__) {
-        console.log('Running migrations...')
-        await conn.dropDatabase()
-        await conn.runMigrations()
-    }
-    console.log('__prod__', __prod__)
 
     // create server instance
     const app = express()
