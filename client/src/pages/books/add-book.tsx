@@ -18,7 +18,6 @@ const AddBook: React.FC = ({}) => {
         if (rawHtml) {
             const book: BookHighlights = extractBookHighlights(rawHtml)
             saveUserBook(book)
-            router.push('/books/my-books/')
         }
     }, [rawHtml])
 
@@ -33,6 +32,7 @@ const AddBook: React.FC = ({}) => {
                 'success'
             )
         }
+        router.push('/books/my-books/')
         return response
     }
 

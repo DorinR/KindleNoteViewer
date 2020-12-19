@@ -136,20 +136,21 @@ export class BookResolver {
         newBook.owner = userId
         const newlySavedBookId = (await Book.save(newBook)).id
 
-        book.sections.forEach(async (section) => {
+        for (const section of book.sections) {
             let tempSection = new BookSection()
             tempSection.owner = userId
             tempSection.book = newlySavedBookId.toString()
             tempSection.sectionHeading = section.sectionHeading
+            console.log(`section heading: ${section.sectionHeading}`)
             let tempSectionId = (await BookSection.save(tempSection)).id
-            section.sectionNotes.forEach(async (highlight) => {
+            for (const highlight of section.sectionNotes) {
                 let tempHighlight = new SectionHighlight()
                 tempHighlight.owner = userId
                 tempHighlight.section = tempSectionId.toString()
                 tempHighlight.note = highlight.note
                 await SectionHighlight.save(tempHighlight)
-            })
-        })
+            }
+        }
 
         return {
             book: newBook,
@@ -262,7 +263,10 @@ export class BookResolver {
                 error: `"${bookId}" does not exist in this user's book library`,
             }
         }
-        const sections = await BookSection.find({ where: { owner: userId, book: book.id.toString() } })
+        const sections = await BookSection.find({
+            where: { owner: userId, book: book.id.toString() },
+            order: { id: 'ASC' },
+        })
 
         return {
             bookHeadings: sections,
