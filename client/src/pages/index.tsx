@@ -12,7 +12,6 @@ const Index = () => (
             <Text fontSize='5xl' mb={4}>
                 how to import books
             </Text>
-
             <Box
                 borderWidth='2px'
                 padding='15px'
