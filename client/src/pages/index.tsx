@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormShaper } from '../components/FormShaper'
 import { NavBar } from '../components/NavBar'
-import { Text } from '@chakra-ui/react'
+import { Text, Box, useColorModeValue } from '@chakra-ui/react'
 import Image from 'next/image'
 import { Center } from '@chakra-ui/react'
 
@@ -13,24 +13,75 @@ const Index = () => (
                 how to import books
             </Text>
 
-            {/* <Image src={require('../static/kindle_app_export.gif')}> </Image> */}
-            {/* <img src='/static/kindle_app_export.gif' /> */}
+            <Box
+                borderWidth='2px'
+                padding='15px'
+                borderRadius='xl'
+                mb={6}
+                backgroundColor={useColorModeValue('gray.200', 'gray.700')}>
+                <Text fontSize='3xl' mb={4}>
+                    <strong>Part 1: </strong>exporting highlights from Kindle app
+                </Text>
+                <Text fontSize='m' mb={1}>
+                    <strong>1. </strong>Open Kindle App
+                </Text>
+                <Text fontSize='m' mb={1}>
+                    <strong>2. </strong>Open a book
+                </Text>
+                <Text fontSize='m' mb={1}>
+                    <strong>3. </strong>Open highlights for that book
+                </Text>
+                <Text fontSize='m' mb={4}>
+                    <strong>4. </strong>Click share button and email the highlights to yourself
+                </Text>
+                <Text fontSize='3xl' mb={4}>
+                    What it should look like
+                </Text>
+                <Center mb={1}>
+                    <Image
+                        loading='eager'
+                        src='/kindleExport.gif'
+                        alt='kindle_export_how_to'
+                        width='256'
+                        height='554'
+                    />
+                </Center>
+            </Box>
 
-            <Text fontSize='xl' mb={4}>
-                <strong>Step 1: </strong>export from kindle app
-            </Text>
-
-            <Center mb={10}>
-                <Image src='/kindleExport.gif' alt='kindle_export_how_to' width='256' height='554' />
-            </Center>
-
-            <Text fontSize='xl' mb={4}>
-                <strong>Step 2: </strong>import into app
-            </Text>
-
-            <Center>
-                <Image src='/highlightsImport.gif' alt='highlights_import_how_to' width='553' height='531' />
-            </Center>
+            <Box
+                borderWidth='2px'
+                padding='15px'
+                borderRadius='xl'
+                mb={4}
+                backgroundColor={useColorModeValue('gray.200', 'gray.700')}>
+                <Text fontSize='3xl' mb={4}>
+                    <strong>Part 2: </strong>Importing the highlights into ReadingNotes
+                </Text>
+                <Text fontSize='m' mb={1}>
+                    <strong>1. </strong>Log into your ReadingNotes account
+                </Text>
+                <Text fontSize='m' mb={1}>
+                    <strong>2. </strong>Click on "+ add book" at the top of the page
+                </Text>
+                <Text fontSize='m' mb={1}>
+                    <strong>3. </strong>Drag and drop the highlights file you emailed to yourself
+                </Text>
+                <Text fontSize='m' mb={4}>
+                    <strong>4. </strong>Success popup will appear once highlights have been imported.
+                </Text>
+                <Text fontSize='3xl' mb={4}>
+                    What it should look like
+                </Text>
+                <Center>
+                    <Image
+                        loading='eager'
+                        src='/highlightsImport.gif'
+                        alt='highlights_import_how_to'
+                        width='553'
+                        height='531'
+                    />
+                </Center>
+            </Box>
         </FormShaper>
     </div>
 )
