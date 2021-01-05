@@ -54,7 +54,7 @@ const Index = () => (
                 mb={4}
                 backgroundColor={useColorModeValue('gray.200', 'gray.700')}>
                 <Text fontSize='3xl' mb={4}>
-                    <strong>Part 2: </strong>Importing the highlights into ReadingNotes
+                    <strong>Part 2: </strong>Importing the highlights into Reading Notes
                 </Text>
                 <Text fontSize='m' mb={1}>
                     <strong>1. </strong>Log into your ReadingNotes account
