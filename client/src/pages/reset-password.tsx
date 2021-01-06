@@ -5,8 +5,8 @@ import { Wrapper } from '../components/Wrapper'
 import { InputField } from '../components/InputField'
 import { useRouter } from 'next/router'
 import { useResetPasswordMutation } from '../generated/graphql'
-import { NavBar } from '../components/NavBar'
 import { FormShaper } from '../components/FormShaper'
+import { NavBar } from '../components/NavBar'
 
 interface ResetPasswordProps {}
 
