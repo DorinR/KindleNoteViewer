@@ -21,8 +21,11 @@ const Index = () => (
                 <Text fontSize='3xl' mb={4}>
                     <strong>Part 1: </strong>exporting highlights from Kindle app
                 </Text>
+                <Text fontSize='2xl' mb={4}>
+                    ➡️ Steps
+                </Text>
                 <Text fontSize='m' mb={1}>
-                    <strong>1. </strong>Open Kindle App
+                    <strong>1. </strong>Open Kindle App on iPhone or Android device
                 </Text>
                 <Text fontSize='m' mb={1}>
                     <strong>2. </strong>Open a book
@@ -33,16 +36,16 @@ const Index = () => (
                 <Text fontSize='m' mb={4}>
                     <strong>4. </strong>Click share button and email the highlights to yourself
                 </Text>
-                <Text fontSize='3xl' mb={4}>
-                    What it should look like
+                <Text fontSize='2xl' mb={4}>
+                    ➡️ What it should look like
                 </Text>
                 <Center mb={1}>
                     <Image
-                        loading='eager'
                         src='/kindleExport.gif'
                         alt='kindle_export_how_to'
                         width='256'
                         height='554'
+                        unoptimized={true}
                     />
                 </Center>
             </Box>
@@ -56,6 +59,9 @@ const Index = () => (
                 <Text fontSize='3xl' mb={4}>
                     <strong>Part 2: </strong>Importing the highlights into Reading Notes
                 </Text>
+                <Text fontSize='2xl' mb={4}>
+                    ➡️ Steps
+                </Text>
                 <Text fontSize='m' mb={1}>
                     <strong>1. </strong>Log into your ReadingNotes account
                 </Text>
@@ -68,16 +74,16 @@ const Index = () => (
                 <Text fontSize='m' mb={4}>
                     <strong>4. </strong>Success popup will appear once highlights have been imported.
                 </Text>
-                <Text fontSize='3xl' mb={4}>
-                    What it should look like
+                <Text fontSize='2xl' mb={4}>
+                    ➡️ What it should look like
                 </Text>
                 <Center>
                     <Image
-                        loading='eager'
                         src='/highlightsImport.gif'
                         alt='highlights_import_how_to'
                         width='553'
                         height='531'
+                        unoptimized={true}
                     />
                 </Center>
             </Box>
