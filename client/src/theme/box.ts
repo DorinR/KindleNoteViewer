@@ -34,7 +34,6 @@ const standardShadowBox = {
     mb: 5,
     p: 4,
     fontWeight: 'semibold',
-    cursor: 'pointer',
     as: 'h2',
     bg: '#FAFAFA',
     borderColor: 'grey.300',
@@ -42,6 +41,11 @@ const standardShadowBox = {
     color: 'grey.600',
     transitionDuration: '0.2s',
     _hover: { shadow: 'lg', boxShadow: 'lg' },
+}
+
+const standardShadowBoxButton = {
+    ...standardShadowBox,
+    cursor: 'pointer',
 }
 
 const standardShadowBox_dark = {
@@ -53,4 +57,14 @@ const standardShadowBox_dark = {
     _hover: { shadow: 'lg', boxShadow: '0 0 10px -2px grey' },
 }
 
-export const standardShadowBoxStyles = { standardShadowBox, standardShadowBox_dark }
+const standardShadowBoxButton_dark = {
+    ...standardShadowBox_dark,
+    cursor: 'pointer',
+}
+
+export const standardShadowBoxStyles = {
+    standardShadowBox,
+    standardShadowBox_dark,
+    standardShadowBoxButton,
+    standardShadowBoxButton_dark,
+}
