@@ -6,8 +6,6 @@ import { Formik, Form } from 'formik'
 import { InputField } from '../../components/InputField'
 import { Wrapper } from '../../components/Wrapper'
 import { toErrorMap } from '../../utils/toErrorMap'
-import { FormShaper } from '../../components/FormShaper'
-import { NavBar } from '../../components/NavBar'
 
 interface ChangePasswordProps {}
 
@@ -19,38 +17,35 @@ export const changePassword: React.FC<ChangePasswordProps> = () => {
 
     return (
         <>
-            <NavBar />
-            <FormShaper>
-                <Wrapper variant='regular'>
-                    <Formik
-                        initialValues={{ password: '' }}
-                        onSubmit={async (values, { setErrors }) => {
-                            const response = await changePassword({ token: validToken, password: values.password })
-                            if (response.data?.changePassword.errors?.length) {
-                                setErrors(toErrorMap(response.data.changePassword.errors))
-                            } else {
-                                alert('Password changed successfully!')
-                                setTimeout(() => {
-                                    router.push('/books/my-books')
-                                }, 1000)
-                            }
-                        }}>
-                        {({ isSubmitting }) => (
-                            <Form>
-                                <InputField
-                                    name='password'
-                                    label='New Password'
-                                    placeholder='new password'
-                                    type='password'
-                                />
-                                <Button mt={4} isLoading={isSubmitting} type='submit'>
-                                    Change Password
-                                </Button>
-                            </Form>
-                        )}
-                    </Formik>
-                </Wrapper>
-            </FormShaper>
+            <Wrapper variant='regular'>
+                <Formik
+                    initialValues={{ password: '' }}
+                    onSubmit={async (values, { setErrors }) => {
+                        const response = await changePassword({ token: validToken, password: values.password })
+                        if (response.data?.changePassword.errors?.length) {
+                            setErrors(toErrorMap(response.data.changePassword.errors))
+                        } else {
+                            alert('Password changed successfully!')
+                            setTimeout(() => {
+                                router.push('/books/my-books')
+                            }, 1000)
+                        }
+                    }}>
+                    {({ isSubmitting }) => (
+                        <Form>
+                            <InputField
+                                name='password'
+                                label='New Password'
+                                placeholder='new password'
+                                type='password'
+                            />
+                            <Button mt={4} isLoading={isSubmitting} type='submit'>
+                                Change Password
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
+            </Wrapper>
         </>
     )
 }

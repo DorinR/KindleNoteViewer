@@ -1,6 +1,4 @@
 import React from 'react'
-import { FormShaper } from '../../components/FormShaper'
-import { NavBar } from '../../components/NavBar'
 import { Center, Spinner, Text } from '@chakra-ui/react'
 import { useGetUserBooksQuery } from '../../generated/graphql'
 import genBox from '../../components/component-gen/genBox'
@@ -25,19 +23,16 @@ const MyBooks: React.FC = ({}) => {
 
     return (
         <>
-            <NavBar />
-            <FormShaper>
-                <Text fontSize='5xl' mb={4}>
-                    my books
-                </Text>
-                {fetching ? (
-                    <Center>
-                        <Spinner size='xl' mt={10} />
-                    </Center>
-                ) : (
-                    renderedBooks
-                )}
-            </FormShaper>
+            <Text fontSize='5xl' mb={4}>
+                my books
+            </Text>
+            {fetching ? (
+                <Center>
+                    <Spinner size='xl' mt={10} />
+                </Center>
+            ) : (
+                renderedBooks
+            )}
         </>
     )
 }

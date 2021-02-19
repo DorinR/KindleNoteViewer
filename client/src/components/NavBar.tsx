@@ -1,5 +1,5 @@
 import { Box, Button, Flex, useColorMode, IconButton, Badge } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import NextLink from 'next/link'
 import { useLogoutMutation, useMeQuery } from '../generated/graphql'
 import { MoonIcon, SunIcon, AddIcon, HamburgerIcon, Icon } from '@chakra-ui/icons'
@@ -22,6 +22,10 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         runMeQuery()
         router.push('/')
     }
+
+    useEffect(() => {
+        runMeQuery()
+    }, [])
 
     if (fetching) {
         // don't display anything

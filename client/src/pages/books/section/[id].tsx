@@ -1,6 +1,4 @@
 import React from 'react'
-import { FormShaper } from '../../../components/FormShaper'
-import { NavBar } from '../../../components/NavBar'
 import { Spinner, Center, Text, Button } from '@chakra-ui/react'
 import { useGetIntId } from '../../../utils/getId'
 import { useGetSectionHighlightsQuery } from '../../../generated/graphql'
@@ -28,22 +26,19 @@ const MyBooks: React.FC = ({}) => {
 
     return (
         <>
-            <NavBar />
-            <FormShaper>
-                <Text fontSize='5xl' mb={4}>
-                    highlights
-                </Text>
-                <Button mb={5} leftIcon={<ArrowBackIcon />} onClick={() => router.back()}>
-                    all sections
-                </Button>
-                {fetching ? (
-                    <Center>
-                        <Spinner size='xl' mt={10} />
-                    </Center>
-                ) : (
-                    sectionNotes
-                )}
-            </FormShaper>
+            <Text fontSize='5xl' mb={4}>
+                highlights
+            </Text>
+            <Button mb={5} leftIcon={<ArrowBackIcon />} onClick={() => router.back()}>
+                all sections
+            </Button>
+            {fetching ? (
+                <Center>
+                    <Spinner size='xl' mt={10} />
+                </Center>
+            ) : (
+                sectionNotes
+            )}
         </>
     )
 }
